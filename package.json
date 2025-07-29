@@ -22,7 +22,8 @@
     "build:linux": "electron-vite build && electron-builder --linux --config electron-builder.config.cjs",
     "release": "node ./scripts/release.js",
     "fix-pnpm-windows": "node ./scripts/fix-pnpm-windows.js",
-    "build-rs": "sh scripts/build-rs.sh"
+    "build-rs": "node scripts/build-rs.js",
+    "rebuild": "electron-rebuild -w @egoist/electron-panel-window"
   },
   "dependencies": {
     "@egoist/electron-panel-window": "^8.0.3",

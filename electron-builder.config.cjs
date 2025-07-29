@@ -70,7 +70,7 @@ module.exports = {
   appImage: {
     artifactName: "${name}-${version}.${ext}",
   },
-  npmRebuild: false,
+  npmRebuild: "npm",
   publish: {
     provider: "github",
     owner: "aj47",

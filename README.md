@@ -90,6 +90,12 @@ Whispo is built with a modern, multi-process architecture designed for performan
 - **Rust** toolchain for building the native binary
 - **Xcode Command Line Tools** (macOS) or **Visual Studio Build Tools** (Windows)
 
+#### Windows-Specific Requirements
+
+- **Visual Studio 2022 Build Tools** or **Visual Studio Community** with C++ build tools
+- **Python 3.8+** (for node-gyp native compilation)
+- **Git** with bash support (Git for Windows recommended)
+
 ### Setup
 
 1. **Clone the repository**
@@ -102,6 +108,8 @@ Whispo is built with a modern, multi-process architecture designed for performan
    ```bash
    pnpm install
    ```
+   
+   > **Windows users**: If you encounter pnpm .cjs execution errors, use `npm install` instead. See [Windows Setup Guide](docs/WINDOWS-SETUP.md) for detailed instructions.
 
 3. **Build Rust binary**
    ```bash
@@ -215,7 +223,22 @@ Configure intelligent transcript enhancement:
 - Run as administrator (Windows)
 - Check target application supports text input
 
+**🪟 Windows-Specific Issues**
 
+*Native dependency compilation errors:*
+- Install Visual Studio Build Tools with C++ workload
+- Ensure Python 3.8+ is installed and in PATH
+- Try using npm instead of pnpm for native rebuilds: `npm run rebuild`
+
+*Rust binary build failures:*
+- Install Rust from [rustup.rs](https://rustup.rs/)
+- Ensure Git bash is properly installed
+- Use the cross-platform build script: `pnpm build-rs`
+
+*Shell/bash command errors:*
+- Install Git for Windows with bash support
+- Use PowerShell or Command Prompt as fallback
+- Check PATH environment variable includes Git bin directory
 
 **🌐 API errors**
 - Verify API keys are correct
