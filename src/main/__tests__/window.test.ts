@@ -38,8 +38,8 @@ vi.mock('electron', () => ({
   }
 }))
 
-// Mock electron-panel-window
-vi.mock('@egoist/electron-panel-window', () => ({
+// Mock panel-window-manager (our new implementation)
+vi.mock('../panel-window-manager', () => ({
   makePanel: vi.fn(),
   makeKeyWindow: vi.fn(),
   makeWindow: vi.fn()
@@ -96,7 +96,7 @@ describe('Window Management', () => {
     vi.mocked(screen.getCursorScreenPoint).mockReturnValue({ x: 100, y: 100 })
     vi.mocked(screen.getDisplayNearestPoint).mockReturnValue({
       workArea: { x: 0, y: 0, width: 1920, height: 1080 }
-    })
+    } as any)
     
     // Setup tipc mock
     vi.mocked(getRendererHandlers).mockReturnValue(mockRendererHandlers as any)
@@ -160,8 +160,8 @@ describe('Window Management', () => {
 
     it('should setup dock behavior on macOS when hideDockIcon is enabled', () => {
       // Mock process.env.IS_MAC by setting it temporarily
-      const originalEnv = process.env.IS_MAC
-      process.env.IS_MAC = 'true'
+      const originalEnv = (process.env as any).IS_MAC
+      (process.env as any).IS_MAC = true
       
       vi.mocked(configStore.get).mockReturnValue({ hideDockIcon: true })
       
@@ -177,16 +177,16 @@ describe('Window Management', () => {
       
       // Restore original environment
       if (originalEnv === undefined) {
-        delete process.env.IS_MAC
+        delete (process.env as any).IS_MAC
       } else {
-        process.env.IS_MAC = originalEnv
+        (process.env as any).IS_MAC = originalEnv
       }
     })
 
     it('should setup dock show behavior on macOS', () => {
       // Mock process.env.IS_MAC by setting it temporarily
-      const originalEnv = process.env.IS_MAC
-      process.env.IS_MAC = 'true'
+      const originalEnv = (process.env as any).IS_MAC
+      (process.env as any).IS_MAC = true
       
       vi.mocked(configStore.get).mockReturnValue({ hideDockIcon: true })
       vi.mocked(app.dock.isVisible).mockReturnValue(false)
@@ -202,9 +202,9 @@ describe('Window Management', () => {
       
       // Restore original environment
       if (originalEnv === undefined) {
-        delete process.env.IS_MAC
+        delete (process.env as any).IS_MAC
       } else {
-        process.env.IS_MAC = originalEnv
+        (process.env as any).IS_MAC = originalEnv
       }
     })
 

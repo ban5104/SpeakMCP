@@ -8,6 +8,9 @@
     "src/renderer/src/**/*.tsx",
     "src/preload/*.d.ts"
   ],
+  "exclude": [
+    "src/renderer/src/components/__tests__/**/*"
+  ],
   "compilerOptions": {
     "composite": true,
     "jsx": "react-jsx",

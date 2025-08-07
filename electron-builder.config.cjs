@@ -8,6 +8,7 @@ module.exports = {
     buildResources: "build",
   },
   files: [
+    "out/**/*",
     "!**/.vscode/*",
     "!src/*",
     "!scripts/*",
@@ -20,7 +21,9 @@ module.exports = {
     "!.prettierrc",
     '!speakmcp-rs/*'
   ],
-  asarUnpack: ["resources/**", "node_modules/**"],
+  extraResources: [
+    "resources/**/*"
+  ],
   win: {
     executableName: "speakmcp",
   },
@@ -31,7 +34,7 @@ module.exports = {
     createDesktopShortcut: "always",
   },
   mac: {
-    binaries: [`resources/bin/speakmcp-rs${process.platform === 'darwin' ? '' : '.exe'}`],
+    binaries: ["resources/bin/speakmcp-rs"],
     artifactName: "${productName}-${version}-${arch}.${ext}",
     entitlementsInherit: "build/entitlements.mac.plist",
     identity: process.env.CSC_NAME || "Apple Development",
@@ -70,7 +73,7 @@ module.exports = {
   appImage: {
     artifactName: "${name}-${version}.${ext}",
   },
-  npmRebuild: "npm",
+  npmRebuild: true,
   publish: {
     provider: "github",
     owner: "aj47",

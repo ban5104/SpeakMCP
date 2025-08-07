@@ -10,13 +10,14 @@ import { configStore } from "./config"
 import { state } from "./state"
 import { spawn, ChildProcess } from "child_process"
 import path from "path"
+import fs from "fs"
 import { isAccessibilityGranted } from "./utils"
 
 let binaryName: string;
 
 switch (process.platform) {
   case 'darwin': // This is macOS
-    binaryName = 'speakmcp-rs-mac';
+    binaryName = 'speakmcp-rs';
     break;
   case 'win32': // This is Windows
     binaryName = 'speakmcp-rs.exe';
@@ -28,9 +29,19 @@ switch (process.platform) {
     throw new Error(`Unsupported platform for rdev: ${process.platform}`);
 }
 
-const rdevPath = path
-  .join(__dirname, `../../resources/bin/${binaryName}`)
-  .replace("app.asar", "app.asar.unpacked")
+// When packaged, extraResources copies the resources folder structure to the Resources directory
+const rdevPath = process.resourcesPath
+  ? path.join(process.resourcesPath, 'resources', 'bin', binaryName)
+  : path.join(__dirname, `../../resources/bin/${binaryName}`)
+
+// Check if the Rust binary exists
+const isBinaryAvailable = () => {
+  try {
+    return fs.existsSync(rdevPath)
+  } catch (error) {
+    return false
+  }
+}
 
 type RdevEvent = {
   event_type: "KeyPress" | "KeyRelease"
@@ -44,6 +55,14 @@ type RdevEvent = {
 
 export const writeText = (text: string) => {
   return new Promise<void>((resolve, reject) => {
+    if (!isBinaryAvailable()) {
+      console.warn("⚠️  Rust binary not available - text insertion disabled")
+      console.warn("💡 Install Rust toolchain and run 'pnpm run build-rs' to enable text insertion")
+      // Resolve gracefully instead of rejecting to prevent app crashes
+      resolve()
+      return
+    }
+
     const child: ChildProcess = spawn(rdevPath, ["write", text])
 
     let stderr = ""

@@ -1,36 +1,49 @@
+import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { MCPService } from '../mcp-service'
 import { configStore } from '../config'
 import { MCPConfig, MCPServerConfig } from '../../shared/types'
 
-// Mock the dependencies
-jest.mock('../config', () => ({
-  configStore: {
-    get: jest.fn()
-  }
-}))
-
-jest.mock('@modelcontextprotocol/sdk/client/index.js', () => ({
-  Client: jest.fn().mockImplementation(() => ({
-    connect: jest.fn(),
-    listTools: jest.fn().mockResolvedValue({ tools: [] }),
-    callTool: jest.fn(),
-    close: jest.fn()
+// Mock electron app module
+vi.mock('electron', () => ({
+  app: {
+    getPath: vi.fn().mockReturnValue('/mock/appData')
+  },
+  Notification: vi.fn().mockImplementation((options) => ({
+    show: vi.fn(),
+    title: options.title,
+    body: options.body
   }))
 }))
 
-jest.mock('@modelcontextprotocol/sdk/client/stdio.js', () => ({
-  StdioClientTransport: jest.fn().mockImplementation(() => ({
-    close: jest.fn()
+// Mock the dependencies
+vi.mock('../config', () => ({
+  configStore: {
+    get: vi.fn()
+  }
+}))
+
+vi.mock('@modelcontextprotocol/sdk/client/index.js', () => ({
+  Client: vi.fn().mockImplementation(() => ({
+    connect: vi.fn(),
+    listTools: vi.fn().mockResolvedValue({ tools: [] }),
+    callTool: vi.fn(),
+    close: vi.fn()
+  }))
+}))
+
+vi.mock('@modelcontextprotocol/sdk/client/stdio.js', () => ({
+  StdioClientTransport: vi.fn().mockImplementation(() => ({
+    close: vi.fn()
   }))
 }))
 
 describe('MCPService', () => {
   let mcpService: MCPService
-  const mockConfigStore = configStore as jest.Mocked<typeof configStore>
+  const mockConfigStore = configStore as any
 
   beforeEach(() => {
     mcpService = new MCPService()
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   describe('initialize', () => {

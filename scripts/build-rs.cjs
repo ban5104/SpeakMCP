@@ -17,6 +17,15 @@ process.chdir(rustDir);
 console.log('Building Rust binary...');
 
 try {
+  // Check if cargo is available
+  try {
+    execSync('cargo --version', { stdio: 'pipe' });
+  } catch (cargoError) {
+    console.log('⚠️  Cargo not found, skipping Rust binary build');
+    console.log('💡 Install Rust toolchain to enable full functionality');
+    process.exit(0);
+  }
+
   // Build the Rust binary in release mode
   execSync('cargo build --release', { stdio: 'inherit' });
   
@@ -32,10 +41,13 @@ try {
   
   // On macOS, run the signing script if it exists
   if (process.platform === 'darwin') {
-    const signScript = path.join('..', 'scripts', 'sign-binary.sh');
+    const projectRoot = path.join(__dirname, '..');
+    const signScript = path.join(projectRoot, 'scripts', 'sign-binary.sh');
     if (fs.existsSync(signScript)) {
       console.log('🔐 Signing Rust binary...');
-      execSync('sh ../scripts/sign-binary.sh', { stdio: 'inherit' });
+      // Change back to project root for signing
+      process.chdir(projectRoot);
+      execSync('bash scripts/sign-binary.sh', { stdio: 'inherit' });
     }
   }
   
