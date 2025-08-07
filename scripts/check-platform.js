@@ -82,10 +82,27 @@ function checkPnpm() {
   
   if (requiredPnpmVersion) {
     const minVersion = requiredPnpmVersion.replace('>=', '');
-    const currentVersionNum = parseFloat(pnpmVersion);
-    const minVersionNum = parseFloat(minVersion);
     
-    if (currentVersionNum >= minVersionNum) {
+    // Proper semantic version comparison
+    const parseVersion = (version) => {
+      return version.split('.').map(num => parseInt(num, 10));
+    };
+    
+    const compareVersions = (current, required) => {
+      const currentParts = parseVersion(current);
+      const requiredParts = parseVersion(required);
+      
+      for (let i = 0; i < Math.max(currentParts.length, requiredParts.length); i++) {
+        const currentPart = currentParts[i] || 0;
+        const requiredPart = requiredParts[i] || 0;
+        
+        if (currentPart > requiredPart) return 1;
+        if (currentPart < requiredPart) return -1;
+      }
+      return 0;
+    };
+    
+    if (compareVersions(pnpmVersion, minVersion) >= 0) {
       log(`pnpm version meets requirement: ${requiredPnpmVersion}`, 'success');
     } else {
       log(`pnpm version ${pnpmVersion} does not meet requirement: ${requiredPnpmVersion}`, 'error');

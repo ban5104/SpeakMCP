@@ -49,7 +49,7 @@ async function validateConfiguration() {
       },
       {
         name: 'Excludes test files and directories',
-        test: () => mainConfig.files.some(pattern => pattern.includes('test')),
+        test: () => mainConfig.files.some(pattern => pattern.includes('!test') || pattern.includes('!**/__tests__') || pattern.includes('!*.test.') || pattern.includes('!*.spec.')),
         fix: '✅ Test files and directories excluded'
       }
     ];
