@@ -11,15 +11,17 @@
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
-    "typecheck": "npm run typecheck:node && npm run typecheck:web",
+    "typecheck": "pnpm run typecheck:node && pnpm run typecheck:web",
     "start": "electron-vite preview",
     "dev": "electron-vite dev --watch",
-    "build": "npm run typecheck && electron-vite build && npm run build-rs",
+    "build:pre": "node scripts/check-platform.js",
+    "build": "pnpm run build:pre && pnpm run typecheck && electron-vite build && pnpm run build-rs",
     "postinstall": "electron-builder install-app-deps",
-    "build:unpack": "npm run build && electron-builder --dir",
-    "build:win": "npm run build && electron-builder --win --config electron-builder.config.cjs",
-    "build:mac": "electron-vite build && electron-builder --mac --config electron-builder.config.cjs",
-    "build:linux": "electron-vite build && electron-builder --linux --config electron-builder.config.cjs",
+    "build:unpack": "pnpm run build && electron-builder --dir --config build/electron-builder-base.cjs",
+    "build:win": "pnpm run build && electron-builder --win --config build/electron-builder-win.cjs",
+    "build:mac": "pnpm run build && electron-builder --mac --config build/electron-builder-mac.cjs",
+    "build:linux": "pnpm run build && electron-builder --linux --config build/electron-builder-linux.cjs",
+    "build:all": "pnpm run build:win && pnpm run build:mac && pnpm run build:linux",
     "release": "node ./scripts/release.js",
     "fix-pnpm-windows": "node ./scripts/fix-pnpm-windows.js",
     "build-rs": "node scripts/build-rs.js",
@@ -78,6 +80,10 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/user-event": "^14.5.2",
     "jsdom": "^25.0.1"
+  },
+  "engines": {
+    "node": ">=18.20.0 <19",
+    "pnpm": ">=8.0.0"
   },
   "packageManager": "pnpm@9.12.1+sha512.e5a7e52a4183a02d5931057f7a0dbff9d5e9ce3161e33fa68ae392125b79282a8a8a470a51dfc8a0ed86221442eb2fb57019b0990ed24fab519bf0e1bc5ccfc4"
 }

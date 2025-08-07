@@ -1,80 +1,40 @@
 // @ts-check
 
-/** @type {import('electron-builder').Configuration} */
-module.exports = {
-  appId: "app.speakmcp",
-  productName: "SpeakMCP",
-  directories: {
-    buildResources: "build",
-  },
-  files: [
-    "!**/.vscode/*",
-    "!src/*",
-    "!scripts/*",
-    "!electron.vite.config.{js,ts,mjs,cjs}",
-    "!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}",
-    "!{.env,.env.*,.npmrc,pnpm-lock.yaml}",
-    "!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}",
-    "!*.{js,cjs,mjs,ts}",
-    "!components.json",
-    "!.prettierrc",
-    '!speakmcp-rs/*'
-  ],
-  asarUnpack: ["resources/**", "node_modules/**"],
-  win: {
-    executableName: "speakmcp",
-  },
-  nsis: {
-    artifactName: "${name}-${version}-setup.${ext}",
-    shortcutName: "${productName}",
-    uninstallDisplayName: "${productName}",
-    createDesktopShortcut: "always",
-  },
-  mac: {
-    binaries: [`resources/bin/speakmcp-rs${process.platform === 'darwin' ? '' : '.exe'}`],
-    artifactName: "${productName}-${version}-${arch}.${ext}",
-    entitlementsInherit: "build/entitlements.mac.plist",
-    identity: process.env.CSC_NAME || "Apple Development",
-    extendInfo: [
-      {
-        NSCameraUsageDescription:
-          "Application requests access to the device's camera.",
-      },
-      {
-        NSMicrophoneUsageDescription:
-          "Application requests access to the device's microphone.",
-      },
-      {
-        NSDocumentsFolderUsageDescription:
-          "Application requests access to the user's Documents folder.",
-      },
-      {
-        NSDownloadsFolderUsageDescription:
-          "Application requests access to the user's Downloads folder.",
-      },
-    ],
-    notarize: process.env.APPLE_TEAM_ID
-      ? {
-          teamId: process.env.APPLE_TEAM_ID,
-        }
-      : undefined,
-  },
-  dmg: {
-    artifactName: "${productName}-${version}-${arch}.${ext}",
-  },
-  linux: {
-    target: ["AppImage", "snap", "deb"],
-    maintainer: "electronjs.org",
-    category: "Utility",
-  },
-  appImage: {
-    artifactName: "${name}-${version}.${ext}",
-  },
-  npmRebuild: "npm",
-  publish: {
-    provider: "github",
-    owner: "aj47",
-    repo: "SpeakMCP",
-  },
-  removePackageScripts: true,
+const baseConfig = require('./build/electron-builder-base.cjs');
+const macConfig = require('./build/electron-builder-mac.cjs');
+const winConfig = require('./build/electron-builder-win.cjs');
+const linuxConfig = require('./build/electron-builder-linux.cjs');
+
+/**
+ * Main electron-builder configuration
+ * Merges base configuration with platform-specific settings
+ * @type {import('electron-builder').Configuration}
+ */
+function createConfig() {
+  // Deep merge function to properly combine configurations
+  function deepMerge(target, source) {
+    const result = { ...target };
+    
+    for (const key in source) {
+      if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+        result[key] = deepMerge(result[key] || {}, source[key]);
+      } else {
+        result[key] = source[key];
+      }
+    }
+    
+    return result;
+  }
+
+  // Start with base config and merge platform-specific configs
+  let config = { ...baseConfig };
+  
+  // Merge platform-specific configurations
+  config = deepMerge(config, macConfig);
+  config = deepMerge(config, winConfig);
+  config = deepMerge(config, linuxConfig);
+  
+  return config;
 }
+
+module.exports = createConfig();
