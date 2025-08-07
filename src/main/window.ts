@@ -11,7 +11,7 @@ import {
   makeKeyWindow,
   makePanel,
   makeWindow,
-} from "@egoist/electron-panel-window"
+} from "./panel-window-manager"
 import { RendererHandlers } from "./renderer-handlers"
 import { configStore } from "./config"
 
@@ -150,12 +150,27 @@ const getPanelWindowPosition = () => {
 
 export function createPanelWindow() {
   const position = getPanelWindowPosition()
+  
+  // Platform-specific window options
+  const platformOptions = process.platform === 'darwin' 
+    ? { 
+        type: 'panel' as const,  // Native macOS panel
+        vibrancy: 'under-window' as const,
+        visualEffectState: 'active' as const,
+      }
+    : {
+        // Windows/Linux: regular window that will be converted
+        type: undefined,
+        vibrancy: undefined,
+        visualEffectState: undefined
+      }
 
   const win = createBaseWindow({
     id: "panel",
     url: "/panel",
     showWhenReady: false,
     windowOptions: {
+      ...platformOptions,
       hiddenInMissionControl: true,
       skipTaskbar: true,
       closable: false,
@@ -170,8 +185,6 @@ export function createPanelWindow() {
       maxHeight: panelWindowSize.height,
       minWidth: panelWindowSize.width,
       minHeight: panelWindowSize.height,
-      visualEffectState: "active",
-      vibrancy: "under-window",
       alwaysOnTop: true,
       x: position.x,
       y: position.y,
@@ -197,6 +210,8 @@ export function createPanelWindow() {
     }
   })
 
+  // Apply panel behavior to all platforms
+  // macOS already has native panel type set, this adds additional properties
   makePanel(win)
 
   return win

@@ -23,10 +23,9 @@
     "release": "node ./scripts/release.js",
     "fix-pnpm-windows": "node ./scripts/fix-pnpm-windows.js",
     "build-rs": "node scripts/build-rs.js",
-    "rebuild": "electron-rebuild -w @egoist/electron-panel-window"
+    "rebuild": "electron-rebuild"
   },
   "dependencies": {
-    "@egoist/electron-panel-window": "^8.0.3",
     "@modelcontextprotocol/sdk": "^1.13.3"
   },
   "devDependencies": {

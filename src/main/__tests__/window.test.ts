@@ -13,7 +13,7 @@ import {
   getWindowRendererHandlers,
   WINDOWS
 } from '../window'
-import { makePanel, makeKeyWindow, makeWindow } from '@egoist/electron-panel-window'
+import { makePanel, makeKeyWindow, makeWindow } from '../panel-window-manager'
 import { getRendererHandlers } from '@egoist/tipc/main'
 import { configStore } from '../config'
 

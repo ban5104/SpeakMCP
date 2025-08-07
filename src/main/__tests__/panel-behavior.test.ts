@@ -9,7 +9,7 @@ import {
   stopRecordingAndHidePanelWindow,
   WINDOWS
 } from '../window'
-import { makePanel, makeKeyWindow, makeWindow } from '@egoist/electron-panel-window'
+import { makePanel, makeKeyWindow, makeWindow } from '../panel-window-manager'
 import { getRendererHandlers } from '@egoist/tipc/main'
 
 // Mock Electron modules
@@ -27,8 +27,8 @@ vi.mock('electron', () => ({
   }
 }))
 
-// Mock electron-panel-window
-vi.mock('@egoist/electron-panel-window', () => ({
+// Mock panel-window-manager (our new implementation)
+vi.mock('../panel-window-manager', () => ({
   makePanel: vi.fn(),
   makeKeyWindow: vi.fn(),
   makeWindow: vi.fn()
@@ -61,6 +61,15 @@ describe('Panel Window Behavior', () => {
     isClosable: vi.fn(),
     setClosable: vi.fn(),
     loadURL: vi.fn(),
+    setAlwaysOnTop: vi.fn(),
+    setVisibleOnAllWorkspaces: vi.fn(),
+    setSkipTaskbar: vi.fn(),
+    setResizable: vi.fn(),
+    setMaximizable: vi.fn(),
+    setMinimizable: vi.fn(),
+    setFullScreenable: vi.fn(),
+    setIgnoreMouseEvents: vi.fn(),
+    focus: vi.fn(),
     webContents: {
       setWindowOpenHandler: vi.fn(),
       on: vi.fn()
@@ -100,6 +109,7 @@ describe('Panel Window Behavior', () => {
       const window = createPanelWindow()
       
       expect(BrowserWindow).toHaveBeenCalledWith({
+        type: 'panel', // Native macOS panel type
         width: 260,
         height: 50,
         show: false,
