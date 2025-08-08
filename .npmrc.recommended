@@ -1,0 +1,19 @@
+# Selective hoisting for SpeakMCP
+# This replaces the deprecated shamefully-hoist=true
+
+# Hoist Electron-related packages for native module rebuilding
+public-hoist-pattern[]=electron
+public-hoist-pattern[]=@electron-toolkit/*
+public-hoist-pattern[]=electron-*
+
+# Hoist TypeScript type definitions
+public-hoist-pattern[]=*types*
+public-hoist-pattern[]=typescript
+
+# Hoist React to prevent duplicate instances
+public-hoist-pattern[]=react
+public-hoist-pattern[]=react-dom
+
+# Optional: If you encounter issues with specific packages, add them here
+# public-hoist-pattern[]=@radix-ui/*
+# public-hoist-pattern[]=@tanstack/*

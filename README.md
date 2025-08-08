@@ -14,6 +14,7 @@ This is a **stabilized fork** of the original SpeakMCP project with critical dep
 
 - ✅ **Node.js 24+ Compatibility**: Removed problematic `@egoist/electron-panel-window` dependency
 - ✅ **Native Panel Implementation**: Cross-platform panel window manager with platform-specific optimizations
+- ✅ **Modern Dependency Management**: Migrated from deprecated `shamefully-hoist=true` to selective hoisting patterns
 - ✅ **Comprehensive Testing**: 77 E2E tests across 5 test suites ensuring stability
 - ✅ **Build System Improvements**: Enhanced cross-platform build process
 - 📚 **Documentation**: Complete fork maintenance and troubleshooting guides
@@ -21,6 +22,7 @@ This is a **stabilized fork** of the original SpeakMCP project with critical dep
 **Key Changes:**
 - Replaced `@egoist/electron-panel-window` with native `PanelWindowManager`
 - Added platform-specific panel behavior (native macOS panels, simulated Windows/Linux)
+- Migrated to modern pnpm selective hoisting (from deprecated `shamefully-hoist=true`)
 - Maintained full API compatibility with existing code
 - Enhanced build scripts for better cross-platform support
 
@@ -190,6 +192,27 @@ pnpm build:linux           # Build for Linux
 pnpm typecheck             # Type checking
 pnpm lint                  # ESLint
 ```
+
+### Dependency Management
+
+This fork uses **modern pnpm selective hoisting** for optimal dependency management:
+
+```bash
+# Clean install with modern configuration
+pnpm install
+
+# If you encounter dependency issues, rollback is available
+./scripts/rollback-quick.sh      # Fast rollback
+./scripts/rollback-full.sh       # Complete reset
+```
+
+**Configuration Details:**
+- ✅ **Selective Hoisting**: Only essential packages (electron, react, typescript) hoisted
+- ✅ **Build Tool Compatibility**: All build tools (electron-vite, electron-builder) properly configured  
+- ✅ **Cross-Platform**: Same configuration works on macOS, Windows, and Linux
+- 📚 **Migration Documentation**: See `MIGRATION_NOTES.md` for complete details
+
+> **Note**: You may see npm warnings about pnpm-specific configurations. This is expected and doesn't affect functionality.
 
 ### Project Structure
 

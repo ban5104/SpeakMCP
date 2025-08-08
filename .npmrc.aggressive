@@ -1,0 +1,16 @@
+# Aggressive approach - Minimal hoisting for strict isolation
+# Use only if you need maximum dependency isolation
+# May require additional configuration for some tools
+
+# Minimal hoisting - only absolute essentials
+public-hoist-pattern[]=electron
+public-hoist-pattern[]=react
+public-hoist-pattern[]=react-dom
+
+# Strict dependency management
+strict-peer-dependencies=true
+auto-install-peers=false
+resolve-peers-from-workspace-root=false
+
+# Enhanced isolation
+dedupe-peer-dependents=false

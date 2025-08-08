@@ -6,7 +6,9 @@ export const isAccessibilityGranted = () => {
     return true
   }
 
-  return systemPreferences.isTrustedAccessibilityClient(false)
+  const granted = systemPreferences.isTrustedAccessibilityClient(false)
+  console.log(`[ACCESSIBILITY] Permission check result: ${granted}`)
+  return granted
 }
 
 

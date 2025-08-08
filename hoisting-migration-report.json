@@ -1,0 +1,178 @@
+{
+  "timestamp": "2025-08-08T01:01:39.238Z",
+  "duration": 23318,
+  "overallStatus": "FAILED",
+  "summary": "4/7 phases passed",
+  "results": {
+    "backupVerification": {
+      "passed": true,
+      "details": [
+        {
+          "message": "✅ Found backup: .npmrc.backup (22 bytes)",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:15.921Z"
+        },
+        {
+          "message": "✅ Found backup: pnpm-lock.yaml.backup (223239 bytes)",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:15.922Z"
+        },
+        {
+          "message": "✅ Original .npmrc content preserved in backup",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:15.922Z"
+        }
+      ]
+    },
+    "dependencyResolution": {
+      "passed": true,
+      "details": [
+        {
+          "message": "✅ electron resolved correctly",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:16.440Z"
+        },
+        {
+          "message": "✅ typescript resolved correctly",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:16.932Z"
+        },
+        {
+          "message": "✅ react resolved correctly",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:17.452Z"
+        },
+        {
+          "message": "✅ react-dom resolved correctly",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:17.961Z"
+        },
+        {
+          "message": "✅ electron-vite resolved correctly",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:18.534Z"
+        },
+        {
+          "message": "✅ electron-builder resolved correctly",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:19.073Z"
+        },
+        {
+          "message": "✅ vitest resolved correctly",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:19.544Z"
+        },
+        {
+          "message": "✅ @radix-ui/react-dialog resolved correctly",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:20.076Z"
+        },
+        {
+          "message": "✅ @modelcontextprotocol/sdk resolved correctly",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:20.528Z"
+        },
+        {
+          "message": "✅ tailwindcss resolved correctly",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:20.977Z"
+        },
+        {
+          "message": "✅ Package listing successful - found 1 direct dependencies",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:21.420Z"
+        }
+      ]
+    },
+    "typescriptCompilation": {
+      "passed": true,
+      "details": [
+        {
+          "message": "✅ Node TypeScript compilation successful",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:22.553Z"
+        },
+        {
+          "message": "✅ Web TypeScript compilation successful",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:24.424Z"
+        },
+        {
+          "message": "✅ Full TypeScript compilation successful",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:27.718Z"
+        }
+      ]
+    },
+    "buildVerification": {
+      "passed": false,
+      "details": [
+        {
+          "message": "❌ Electron-vite build failed: sh: electron-vite: command not found",
+          "isError": true,
+          "timestamp": "2025-08-08T01:01:27.723Z"
+        },
+        {
+          "message": "✅ Rust binary build successful",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:28.029Z"
+        },
+        {
+          "message": "❌ Electron rebuild failed: npm warn Unknown project config \"public-hoist-pattern\". This will stop working in the next major version of npm.\nnpm warn Unknown project config \"strict-peer-dependencies\". This will stop working in the next major version of npm.\nnpm warn Unknown project config \"auto-install-peers\". This will stop working in the next major version of npm.\nsh: electron-rebuild: command not found",
+          "isError": true,
+          "timestamp": "2025-08-08T01:01:28.139Z"
+        }
+      ]
+    },
+    "testSuiteExecution": {
+      "passed": false,
+      "details": [
+        {
+          "message": "❌ Unit tests failed: sh: vitest: command not found",
+          "isError": true,
+          "timestamp": "2025-08-08T01:01:28.143Z"
+        },
+        {
+          "message": "ℹ️ E2E tests skipped (require display environment)",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:28.143Z"
+        }
+      ]
+    },
+    "packagingVerification": {
+      "passed": true,
+      "details": [
+        {
+          "message": "✅ Unpacked build successful",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:37.145Z"
+        },
+        {
+          "message": "✅ Dist directory created with contents: builder-debug.yml, mac-arm64",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:37.145Z"
+        }
+      ]
+    },
+    "performanceAssessment": {
+      "passed": true,
+      "details": [
+        {
+          "message": "✅ Install completed in 1724ms",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:38.869Z"
+        },
+        {
+          "message": "✅ node_modules size: 1.1G",
+          "isError": false,
+          "timestamp": "2025-08-08T01:01:39.238Z"
+        }
+      ]
+    },
+    "overallStatus": "FAILED"
+  },
+  "recommendations": [
+    "Check build tool compatibility with new hoisting configuration",
+    "Investigate test failures related to module resolution"
+  ]
+}
