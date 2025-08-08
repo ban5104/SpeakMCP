@@ -215,6 +215,13 @@ export function patchModuleResolution(): void {
     isMain: boolean,
     options?: any
   ) {
+    // Prevent infinite recursion - if the request already contains a full path, use original resolver
+    if (request.includes('/app.asar/node_modules/') || 
+        request.includes('/app.asar.unpacked/node_modules/') ||
+        (process.resourcesPath && request.includes(process.resourcesPath))) {
+      return originalResolveFilename.call(this, request, parent, isMain, options)
+    }
+    
     // Check if this is a problematic module being imported from within ASAR
     const isProblematicModule = PROBLEMATIC_MODULES.some(mod => 
       request === mod || request.startsWith(mod + '/') || request.startsWith('@' + mod + '/')
@@ -283,7 +290,8 @@ export function patchModuleResolution(): void {
 
         for (const fallbackPath of fallbackPaths) {
           try {
-            const resolved = require.resolve(fallbackPath)
+            // Use original resolver to avoid recursion
+            const resolved = originalResolveFilename.call(this, fallbackPath, parent, isMain, options)
             console.log(`[Module Resolver] Fallback resolution: ${request} -> ${resolved}`)
             resolveStats.fallbackUsed++
             return resolved
@@ -298,7 +306,8 @@ export function patchModuleResolution(): void {
           for (const ext of extensions) {
             try {
               const pathWithExt = fallbackPath + ext
-              const resolved = require.resolve(pathWithExt)
+              // Use original resolver to avoid recursion
+              const resolved = originalResolveFilename.call(this, pathWithExt, parent, isMain, options)
               console.log(`[Module Resolver] Extension fallback: ${request} -> ${resolved}`)
               resolveStats.fallbackUsed++
               return resolved

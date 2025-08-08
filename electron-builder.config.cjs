@@ -34,6 +34,7 @@ module.exports = {
     "**/node_modules/ajv/**",
     "**/node_modules/ajv-keywords/**",
     "**/node_modules/ajv-formats/**",
+    "**/node_modules/uri-js/**",
     "**/node_modules/json-schema-traverse/**",
     "**/node_modules/require-from-string/**",
     "**/node_modules/fast-deep-equal/**",
