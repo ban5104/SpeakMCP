@@ -19,10 +19,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `pnpm typecheck:web` - Type check renderer process only
 
 ### Code Quality & Testing
-- `pnpm lint` - Run ESLint and auto-fix issues
+- `pnpm lint` - Run ESLint and auto-fix issues (flat config with TypeScript & React support)
 - `pnpm format` - Format code with Prettier
 - `vitest` - Run tests (configured with jsdom environment)
 - `vitest --coverage` - Run tests with coverage report
+
+**ESLint Configuration**: Modern flat config (`eslint.config.js`) with:
+- TypeScript support via `@typescript-eslint`
+- React and React Hooks rules
+- Lenient settings for development workflow
+- Proper ignore patterns for build artifacts and Rust code
 
 ### Platform-Specific Builds
 - `pnpm build:mac` - Build macOS distribution
@@ -89,6 +95,37 @@ SpeakMCP is an AI-powered dictation tool built with Electron that integrates wit
 - `speakmcp-rs/src/main.rs` - System-level keyboard and accessibility integration
 - `scripts/build-rs.js` - Cross-platform Rust build script
 
+## Recent Updates (August 2025)
+
+### Major Fixes & Improvements
+1. **Accessibility Permission System Overhaul**:
+   - Fixed stale permission caching preventing proper detection after app restart
+   - Implemented dynamic permission polling with automatic UI transitions
+   - Improved app restart flow with proper cleanup and error handling
+   - **Result**: Seamless permission flow without manual restarts
+
+2. **Keyboard Monitoring System Fix**:
+   - Fixed Rust binary path resolution in packaged applications
+   - Added comprehensive debugging and error handling
+   - **Result**: Voice recording via Ctrl key now works reliably
+
+3. **Node.js Version Compatibility**:
+   - Updated from Node.js 18.20.0 to support 24.x
+   - Maintained backward compatibility with 18.20.0+
+   - **Result**: Supports modern Node.js versions
+
+4. **Development Infrastructure**:
+   - Added modern ESLint flat configuration
+   - Enhanced debugging capabilities across the application
+   - Improved error messaging and diagnostics
+
+### Current Status
+- ✅ macOS accessibility permissions work seamlessly
+- ✅ Voice recording functionality fully operational
+- ✅ App restart issues resolved
+- ✅ Modern toolchain compatibility (Node.js 24.x, ESLint 9.x)
+- ✅ Comprehensive debugging and error handling
+
 ## Development Notes
 
 ### Platform Support & Architecture
@@ -116,25 +153,61 @@ SpeakMCP is an AI-powered dictation tool built with Electron that integrates wit
 
 ### Known Issues & Solutions
 
-#### macOS Accessibility Permissions
-**Problem**: App shows "Enable in System Settings" even after granting accessibility permissions.
+#### macOS Accessibility Permissions (RESOLVED)
+**Previous Problem**: App showed "Enable in System Settings" even after granting accessibility permissions, and failed to restart properly after permission changes.
 
-**Root Cause**: macOS requires apps to be properly code-signed for accessibility permissions to work correctly. Unsigned Electron apps cannot properly use accessibility APIs even when permissions are granted.
+**Root Causes Identified & Fixed**:
+1. **Stale Permission Caching**: Main process cached permission status at startup and never refreshed it
+2. **Poor Restart Flow**: App restart had race conditions and improper window cleanup
+3. **Missing Dynamic Detection**: Setup window didn't poll for permission changes
+4. **Code Signing**: macOS requires proper signing for accessibility APIs
 
-**Solution**:
-1. The app must be ad-hoc signed after building:
+**Solutions Implemented**:
+1. **Dynamic Permission Checking** (`src/main/index.ts`):
+   - Removed cached `accessibilityGranted` variable
+   - Permission status now checked fresh each time
+   - App activation event properly checks permissions
+
+2. **Improved Restart Flow** (`src/main/tipc.ts`):
+   - Added proper window cleanup with delays
+   - Fixed race conditions in restart sequence
+   - Better error handling during restart
+
+3. **Auto-Permission Detection** (`src/renderer/src/pages/setup.tsx`):
+   - Added React Query polling every 2 seconds
+   - Automatic switch to main window when permissions granted
+   - No restart required after granting permissions
+
+4. **Proper Code Signing**:
    ```bash
    pnpm build:unpack
    codesign --force --deep --sign - dist/mac-arm64/speakmcp.app
    ```
-2. Reset accessibility permissions if needed:
-   ```bash
-   tccutil reset Accessibility
-   ```
-3. Launch the signed app and grant permissions when prompted
-4. The app will now properly detect granted accessibility permissions
 
-**Note**: The build configuration has been updated to use ad-hoc signing by default when no certificate is available (`identity: null` in electron-builder.config.cjs).
+**Current Behavior**: App automatically detects permission changes without restart and seamlessly transitions from setup to main window.
+
+#### Keyboard Monitoring & Rust Binary Issues (RESOLVED)
+**Previous Problem**: Voice recording not working - Ctrl key detection failed due to keyboard monitoring process not starting.
+
+**Root Cause**: Rust binary path resolution failed in packaged apps because binary was located in `app.asar.unpacked/resources/bin/` instead of expected `process.resourcesPath/resources/bin/`.
+
+**Solution Implemented** (`src/main/keyboard.ts`):
+- **Smart Path Resolution**: Added `getPackagedBinaryPath()` function that checks multiple locations:
+  1. `process.resourcesPath/resources/bin/speakmcp-rs` (electron-builder extraResources)
+  2. `process.resourcesPath/app.asar.unpacked/resources/bin/speakmcp-rs` (electron-vite + electron-builder)
+  3. `__dirname/../../resources/bin/speakmcp-rs` (development)
+- **Comprehensive Debugging**: Added debug logging for path resolution and process spawning
+- **Proper Error Handling**: Better error messages and process monitoring
+
+**Current Behavior**: Keyboard monitoring starts automatically when accessibility permissions are granted, enabling voice recording via Ctrl key shortcuts.
+
+#### Node.js Version Compatibility (RESOLVED)
+**Previous Problem**: Build failures due to Node.js version mismatch (18.20.0 vs 24.5.0).
+
+**Solution**: Updated version constraints in multiple files:
+- `package.json`: `"engines": { "node": ">=18.20.0" }` (removed upper limit)
+- `.nvmrc`: Updated from `18.20.0` to `24.5.0`
+- `.node-version`: Updated from `18.20.0` to `24.5.0`
 
 #### Dependency Issues
 - `@egoist/electron-panel-window@^8.0.3` - Critical dependency for panel window functionality
