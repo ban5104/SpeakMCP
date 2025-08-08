@@ -1,0 +1,14 @@
+# Emergency fallback configuration
+# Use if migration causes critical issues
+# Provides near-legacy behavior while removing deprecated option
+
+# Legacy-style hoisting pattern
+public-hoist-pattern[]=*
+
+# Permissive settings for compatibility
+strict-peer-dependencies=false
+auto-install-peers=true
+resolve-peers-from-workspace-root=true
+
+# Allow duplicate peer dependencies
+dedupe-peer-dependents=true

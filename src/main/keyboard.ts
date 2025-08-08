@@ -134,8 +134,11 @@ export function listenToKeyboardEvents() {
   let isPressedCtrlAltKey = false
 
   if (!isAccessibilityGranted()) {
+    console.error('[KEYBOARD] Accessibility not granted - keyboard monitoring disabled')
     return
   }
+  
+  console.log('[KEYBOARD] Accessibility granted - starting keyboard monitoring')
 
   const cancelRecordingTimer = () => {
     if (startRecordingTimer) {

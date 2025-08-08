@@ -35,10 +35,6 @@ public-hoist-pattern[]=postcss
 public-hoist-pattern[]=autoprefixer
 public-hoist-pattern[]=tailwindcss
 
-# MCP SDK dependencies (fix for ajv resolution error)
-public-hoist-pattern[]=ajv
-public-hoist-pattern[]=@modelcontextprotocol/*
-
 # Preserve strict dependency resolution
 strict-peer-dependencies=true
 auto-install-peers=true

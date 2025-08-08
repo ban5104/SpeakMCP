@@ -1,0 +1,24 @@
+# Moderate approach - Balanced compatibility and isolation
+# Good middle ground for most projects
+
+# Core runtime dependencies only
+public-hoist-pattern[]=electron
+public-hoist-pattern[]=react
+public-hoist-pattern[]=react-dom
+public-hoist-pattern[]=typescript
+
+# Essential build tools
+public-hoist-pattern[]=electron-vite
+public-hoist-pattern[]=electron-builder
+public-hoist-pattern[]=vite
+
+# Testing essentials
+public-hoist-pattern[]=vitest
+public-hoist-pattern[]=playwright
+
+# Enable peer dependency management
+strict-peer-dependencies=true
+auto-install-peers=true
+
+# Allow some legacy patterns for compatibility
+resolve-peers-from-workspace-root=false
