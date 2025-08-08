@@ -1,0 +1,1861 @@
+{
+  "config": {
+    "configFile": "/Users/ben/projects/SpeakMCP/playwright.config.ts",
+    "rootDir": "/Users/ben/projects/SpeakMCP/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/results.json"
+        }
+      ],
+      [
+        "list",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/Users/ben/projects/SpeakMCP/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "electron-main",
+        "name": "electron-main",
+        "testDir": "/Users/ben/projects/SpeakMCP/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/.*\\.e2e\\.spec\\.ts$/"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.54.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "app-launch.e2e.spec.ts",
+      "file": "app-launch.e2e.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "SpeakMCP Application Launch & Initialization",
+          "file": "app-launch.e2e.spec.ts",
+          "line": 4,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should launch successfully on all platforms",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8f46302bf47e65974996-f33fb271d9d775de5b52",
+              "file": "app-launch.e2e.spec.ts",
+              "line": 5,
+              "column": 3
+            },
+            {
+              "title": "should create main window or setup window based on accessibility permissions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8f46302bf47e65974996-47e770b6d73b35fdfcc7",
+              "file": "app-launch.e2e.spec.ts",
+              "line": 15,
+              "column": 3
+            },
+            {
+              "title": "should always create panel window",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8f46302bf47e65974996-6c3f9d9fcb64a248d370",
+              "file": "app-launch.e2e.spec.ts",
+              "line": 34,
+              "column": 3
+            },
+            {
+              "title": "should handle app activation correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8f46302bf47e65974996-31c242b8eb62e10e0c87",
+              "file": "app-launch.e2e.spec.ts",
+              "line": 79,
+              "column": 3
+            },
+            {
+              "title": "should handle before-quit event correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8f46302bf47e65974996-78db855f90bb121515fa",
+              "file": "app-launch.e2e.spec.ts",
+              "line": 98,
+              "column": 3
+            },
+            {
+              "title": "should have correct window titles and properties",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8f46302bf47e65974996-8e9ef687bf605cfbc867",
+              "file": "app-launch.e2e.spec.ts",
+              "line": 113,
+              "column": 3
+            },
+            {
+              "title": "should load correct URLs for all windows",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8f46302bf47e65974996-dc4df8af070923e0cd66",
+              "file": "app-launch.e2e.spec.ts",
+              "line": 132,
+              "column": 3
+            },
+            {
+              "title": "should handle window-all-closed event correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8f46302bf47e65974996-1149af73d40e3501ce21",
+              "file": "app-launch.e2e.spec.ts",
+              "line": 153,
+              "column": 3
+            }
+          ],
+          "suites": [
+            {
+              "title": "Platform-specific initialization",
+              "file": "app-launch.e2e.spec.ts",
+              "line": 43,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "macOS: should handle dock behavior correctly",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8f46302bf47e65974996-29799e27edd32866d4d6",
+                  "file": "app-launch.e2e.spec.ts",
+                  "line": 44,
+                  "column": 5
+                },
+                {
+                  "title": "Windows: should initialize with proper taskbar behavior",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8f46302bf47e65974996-1321c160238998304074",
+                  "file": "app-launch.e2e.spec.ts",
+                  "line": 55,
+                  "column": 5
+                },
+                {
+                  "title": "Linux: should start with basic desktop integration",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8f46302bf47e65974996-3703bd792951cd9f758a",
+                  "file": "app-launch.e2e.spec.ts",
+                  "line": 67,
+                  "column": 5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "cross-platform.e2e.spec.ts",
+      "file": "cross-platform.e2e.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Cross-Platform Compatibility",
+          "file": "cross-platform.e2e.spec.ts",
+          "line": 4,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "Platform Detection",
+              "file": "cross-platform.e2e.spec.ts",
+              "line": 11,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should correctly identify current platform",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0d3b092b797e6c1100d8-e7d6124343cf0cf75652",
+                  "file": "cross-platform.e2e.spec.ts",
+                  "line": 12,
+                  "column": 5
+                },
+                {
+                  "title": "should handle platform-specific code paths",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0d3b092b797e6c1100d8-1e5f791ddad3b7b58b97",
+                  "file": "cross-platform.e2e.spec.ts",
+                  "line": 17,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Panel Window Platform Behavior",
+              "file": "cross-platform.e2e.spec.ts",
+              "line": 32,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "macOS: native panel type with vibrancy",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0d3b092b797e6c1100d8-c772f94ed9af65e194f1",
+                  "file": "cross-platform.e2e.spec.ts",
+                  "line": 33,
+                  "column": 5
+                },
+                {
+                  "title": "Windows/Linux: simulated panel with always-on-top",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0d3b092b797e6c1100d8-739177f86615c65b345f",
+                  "file": "cross-platform.e2e.spec.ts",
+                  "line": 63,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Keyboard Shortcuts",
+              "file": "cross-platform.e2e.spec.ts",
+              "line": 96,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should handle platform-specific keyboard shortcuts",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0d3b092b797e6c1100d8-1c746582a90da0c99121",
+                  "file": "cross-platform.e2e.spec.ts",
+                  "line": 97,
+                  "column": 5
+                },
+                {
+                  "title": "should register global shortcuts correctly",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0d3b092b797e6c1100d8-464143e024f488cd7356",
+                  "file": "cross-platform.e2e.spec.ts",
+                  "line": 110,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "System Integration",
+              "file": "cross-platform.e2e.spec.ts",
+              "line": 133,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "macOS: dock behavior and app activation policy",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0d3b092b797e6c1100d8-4d24237b47f4783ecb94",
+                  "file": "cross-platform.e2e.spec.ts",
+                  "line": 134,
+                  "column": 5
+                },
+                {
+                  "title": "Windows: taskbar and system tray integration",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0d3b092b797e6c1100d8-3f17c7f5ce0b2dd6e62b",
+                  "file": "cross-platform.e2e.spec.ts",
+                  "line": 148,
+                  "column": 5
+                },
+                {
+                  "title": "Linux: basic desktop environment compatibility",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0d3b092b797e6c1100d8-c9ef5c8a74a64456f6f8",
+                  "file": "cross-platform.e2e.spec.ts",
+                  "line": 165,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Accessibility Permissions",
+              "file": "cross-platform.e2e.spec.ts",
+              "line": 184,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should handle accessibility permission requirements correctly",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0d3b092b797e6c1100d8-77bc576b815ee941d1c9",
+                  "file": "cross-platform.e2e.spec.ts",
+                  "line": 185,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Window Focus Behavior",
+              "file": "cross-platform.e2e.spec.ts",
+              "line": 199,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should handle window focus without stealing focus from active app",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0d3b092b797e6c1100d8-befc76e1839b953633c8",
+                  "file": "cross-platform.e2e.spec.ts",
+                  "line": 200,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "App Quit Behavior",
+              "file": "cross-platform.e2e.spec.ts",
+              "line": 227,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should handle app quit differently per platform",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0d3b092b797e6c1100d8-d36cb7ada1f52ee8cc2a",
+                  "file": "cross-platform.e2e.spec.ts",
+                  "line": 228,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "File System and Paths",
+              "file": "cross-platform.e2e.spec.ts",
+              "line": 248,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should handle platform-specific paths correctly",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0d3b092b797e6c1100d8-2b81e58b393d0895b8f8",
+                  "file": "cross-platform.e2e.spec.ts",
+                  "line": 249,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Resource Loading",
+              "file": "cross-platform.e2e.spec.ts",
+              "line": 275,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should load resources correctly across platforms",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0d3b092b797e6c1100d8-5190fb35dc3d499bf7fd",
+                  "file": "cross-platform.e2e.spec.ts",
+                  "line": 276,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Performance and Memory",
+              "file": "cross-platform.e2e.spec.ts",
+              "line": 295,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should maintain acceptable performance across platforms",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0d3b092b797e6c1100d8-ac436018db8b953714bd",
+                  "file": "cross-platform.e2e.spec.ts",
+                  "line": 296,
+                  "column": 5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "keyboard-system.e2e.spec.ts",
+      "file": "keyboard-system.e2e.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Keyboard Shortcuts & System Integration",
+          "file": "keyboard-system.e2e.spec.ts",
+          "line": 4,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "Global Keyboard Shortcuts",
+              "file": "keyboard-system.e2e.spec.ts",
+              "line": 11,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should initialize keyboard event listener",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8538b3c559a86b1dcf0f-84e2d0b549ebc8c4cea7",
+                  "file": "keyboard-system.e2e.spec.ts",
+                  "line": 12,
+                  "column": 5
+                },
+                {
+                  "title": "should handle global shortcut registration",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8538b3c559a86b1dcf0f-10d404ef11d38fdafbef",
+                  "file": "keyboard-system.e2e.spec.ts",
+                  "line": 33,
+                  "column": 5
+                },
+                {
+                  "title": "should register platform-appropriate shortcuts",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8538b3c559a86b1dcf0f-0088a20bfe0ac4163bf3",
+                  "file": "keyboard-system.e2e.spec.ts",
+                  "line": 47,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Keyboard Event Handling",
+              "file": "keyboard-system.e2e.spec.ts",
+              "line": 69,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should handle Ctrl key press detection",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8538b3c559a86b1dcf0f-71b388b0e0559a58f72d",
+                  "file": "keyboard-system.e2e.spec.ts",
+                  "line": 70,
+                  "column": 5
+                },
+                {
+                  "title": "should trigger panel window on key combination",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8538b3c559a86b1dcf0f-aeeb61dce8e9e5af59f1",
+                  "file": "keyboard-system.e2e.spec.ts",
+                  "line": 92,
+                  "column": 5
+                },
+                {
+                  "title": "should differentiate between recording modes via shortcuts",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8538b3c559a86b1dcf0f-904089a368c05a65aa17",
+                  "file": "keyboard-system.e2e.spec.ts",
+                  "line": 116,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Text Injection System",
+              "file": "keyboard-system.e2e.spec.ts",
+              "line": 141,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should have Rust binary for text injection available",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8538b3c559a86b1dcf0f-c152bbc35bebc85fdc13",
+                  "file": "keyboard-system.e2e.spec.ts",
+                  "line": 142,
+                  "column": 5
+                },
+                {
+                  "title": "should handle text insertion workflow",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8538b3c559a86b1dcf0f-8f0434a1c77614eea91b",
+                  "file": "keyboard-system.e2e.spec.ts",
+                  "line": 177,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Accessibility Permissions",
+              "file": "keyboard-system.e2e.spec.ts",
+              "line": 199,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should detect accessibility permission status",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8538b3c559a86b1dcf0f-33b91a113d825d72db43",
+                  "file": "keyboard-system.e2e.spec.ts",
+                  "line": 200,
+                  "column": 5
+                },
+                {
+                  "title": "should show appropriate window based on accessibility status",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8538b3c559a86b1dcf0f-74d0ed8338910fc2cb4f",
+                  "file": "keyboard-system.e2e.spec.ts",
+                  "line": 221,
+                  "column": 5
+                },
+                {
+                  "title": "macOS: should handle accessibility API integration",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8538b3c559a86b1dcf0f-7885df2384db338bb165",
+                  "file": "keyboard-system.e2e.spec.ts",
+                  "line": 239,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Platform-Specific System Integration",
+              "file": "keyboard-system.e2e.spec.ts",
+              "line": 255,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "macOS: should integrate with system hotkey handling",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8538b3c559a86b1dcf0f-2042052bada6c100fb80",
+                  "file": "keyboard-system.e2e.spec.ts",
+                  "line": 256,
+                  "column": 5
+                },
+                {
+                  "title": "Windows: should integrate with Win32 APIs",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8538b3c559a86b1dcf0f-0995821965fc08cd140e",
+                  "file": "keyboard-system.e2e.spec.ts",
+                  "line": 270,
+                  "column": 5
+                },
+                {
+                  "title": "Linux: should work with X11/Wayland systems",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8538b3c559a86b1dcf0f-93331e6ee2ebc90fe1a5",
+                  "file": "keyboard-system.e2e.spec.ts",
+                  "line": 284,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Recording Workflow Integration",
+              "file": "keyboard-system.e2e.spec.ts",
+              "line": 299,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should handle recording start via keyboard trigger",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8538b3c559a86b1dcf0f-847977d0548cec2bfe95",
+                  "file": "keyboard-system.e2e.spec.ts",
+                  "line": 300,
+                  "column": 5
+                },
+                {
+                  "title": "should handle MCP recording start via keyboard trigger",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8538b3c559a86b1dcf0f-ba8860defa82808a75d8",
+                  "file": "keyboard-system.e2e.spec.ts",
+                  "line": 327,
+                  "column": 5
+                },
+                {
+                  "title": "should handle recording stop and cleanup",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8538b3c559a86b1dcf0f-ff046f43689ea11569ab",
+                  "file": "keyboard-system.e2e.spec.ts",
+                  "line": 354,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "Keyboard Shortcut Cleanup",
+              "file": "keyboard-system.e2e.spec.ts",
+              "line": 379,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should unregister shortcuts on app quit",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8538b3c559a86b1dcf0f-e679fd69dfca5e6446fc",
+                  "file": "keyboard-system.e2e.spec.ts",
+                  "line": 380,
+                  "column": 5
+                },
+                {
+                  "title": "should handle shortcut conflicts gracefully",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8538b3c559a86b1dcf0f-f137cf9662632d7abe78",
+                  "file": "keyboard-system.e2e.spec.ts",
+                  "line": 393,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "System Tray Integration",
+              "file": "keyboard-system.e2e.spec.ts",
+              "line": 423,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should initialize system tray",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8538b3c559a86b1dcf0f-9725dda674167d06e449",
+                  "file": "keyboard-system.e2e.spec.ts",
+                  "line": 424,
+                  "column": 5
+                },
+                {
+                  "title": "should provide tray menu functionality",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "8538b3c559a86b1dcf0f-c97325bc6eb10960c130",
+                  "file": "keyboard-system.e2e.spec.ts",
+                  "line": 446,
+                  "column": 5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "mcp-integration.e2e.spec.ts",
+      "file": "mcp-integration.e2e.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "MCP Integration E2E Tests",
+          "file": "mcp-integration.e2e.spec.ts",
+          "line": 4,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should initialize with MCP service available",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "08b00c377b6eb2507d21-1ee14ab62b43ab3084b7",
+              "file": "mcp-integration.e2e.spec.ts",
+              "line": 5,
+              "column": 3
+            },
+            {
+              "title": "should handle MCP configuration loading",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "08b00c377b6eb2507d21-1a1ba38866a57d30f82c",
+              "file": "mcp-integration.e2e.spec.ts",
+              "line": 27,
+              "column": 3
+            },
+            {
+              "title": "should distinguish between MCP mode and standard mode",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "08b00c377b6eb2507d21-cad4bd2c3577637a54c5",
+              "file": "mcp-integration.e2e.spec.ts",
+              "line": 53,
+              "column": 3
+            },
+            {
+              "title": "should handle MCP recording workflow",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "08b00c377b6eb2507d21-28d576873826445b0712",
+              "file": "mcp-integration.e2e.spec.ts",
+              "line": 71,
+              "column": 3
+            },
+            {
+              "title": "should handle MCP server connections",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "08b00c377b6eb2507d21-c57e39eadc4bdd689198",
+              "file": "mcp-integration.e2e.spec.ts",
+              "line": 99,
+              "column": 3
+            },
+            {
+              "title": "should handle MCP tool discovery and execution",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "08b00c377b6eb2507d21-474e87b42bf7da4393f3",
+              "file": "mcp-integration.e2e.spec.ts",
+              "line": 122,
+              "column": 3
+            },
+            {
+              "title": "should handle MCP debug logging",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "08b00c377b6eb2507d21-d3a344b874b6ed5cc248",
+              "file": "mcp-integration.e2e.spec.ts",
+              "line": 144,
+              "column": 3
+            },
+            {
+              "title": "should handle MCP configuration persistence",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "08b00c377b6eb2507d21-5a8c407f2cf165eb6425",
+              "file": "mcp-integration.e2e.spec.ts",
+              "line": 178,
+              "column": 3
+            },
+            {
+              "title": "should integrate MCP with panel window lifecycle",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "08b00c377b6eb2507d21-27c963c30a7dc4a1278e",
+              "file": "mcp-integration.e2e.spec.ts",
+              "line": 201,
+              "column": 3
+            },
+            {
+              "title": "should handle MCP fallback tools when no servers configured",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "08b00c377b6eb2507d21-a2706b666c042fc77b7b",
+              "file": "mcp-integration.e2e.spec.ts",
+              "line": 218,
+              "column": 3
+            },
+            {
+              "title": "should handle MCP transcription post-processing",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "08b00c377b6eb2507d21-88533558a1101e3afdab",
+              "file": "mcp-integration.e2e.spec.ts",
+              "line": 238,
+              "column": 3
+            },
+            {
+              "title": "should handle MCP server startup and shutdown",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "08b00c377b6eb2507d21-79671f9020d34f62c4d8",
+              "file": "mcp-integration.e2e.spec.ts",
+              "line": 259,
+              "column": 3
+            },
+            {
+              "title": "should handle MCP configuration validation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "08b00c377b6eb2507d21-d5fef65bd039b2134002",
+              "file": "mcp-integration.e2e.spec.ts",
+              "line": 282,
+              "column": 3
+            },
+            {
+              "title": "should handle MCP error recovery",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "08b00c377b6eb2507d21-2a90e3783dd3cf208cbf",
+              "file": "mcp-integration.e2e.spec.ts",
+              "line": 303,
+              "column": 3
+            },
+            {
+              "title": "should maintain MCP functionality across panel show/hide cycles",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "08b00c377b6eb2507d21-b112ccc8cd803111ad50",
+              "file": "mcp-integration.e2e.spec.ts",
+              "line": 323,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "panel-window.e2e.spec.ts",
+      "file": "panel-window.e2e.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Panel Window Functionality",
+          "file": "panel-window.e2e.spec.ts",
+          "line": 4,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should create panel window with correct dimensions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0e6b58636a2397497ba5-411c100106c814cd11e2",
+              "file": "panel-window.e2e.spec.ts",
+              "line": 5,
+              "column": 3
+            },
+            {
+              "title": "should position panel window in top-right corner",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0e6b58636a2397497ba5-be00800cfa54cadf5ada",
+              "file": "panel-window.e2e.spec.ts",
+              "line": 18,
+              "column": 3
+            },
+            {
+              "title": "should have always-on-top behavior",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0e6b58636a2397497ba5-4b5d93cf625cb814bc8c",
+              "file": "panel-window.e2e.spec.ts",
+              "line": 28,
+              "column": 3
+            },
+            {
+              "title": "should not be closable by default",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0e6b58636a2397497ba5-d06527bbd355d0707d83",
+              "file": "panel-window.e2e.spec.ts",
+              "line": 36,
+              "column": 3
+            },
+            {
+              "title": "should handle panel window show/hide correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0e6b58636a2397497ba5-4e21d1d517626b8692f7",
+              "file": "panel-window.e2e.spec.ts",
+              "line": 70,
+              "column": 3
+            },
+            {
+              "title": "should maintain fixed position when shown",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0e6b58636a2397497ba5-e962db22d0da8c013c0f",
+              "file": "panel-window.e2e.spec.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "should handle multi-screen setups",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0e6b58636a2397497ba5-9f61df53bd8a7641d9d0",
+              "file": "panel-window.e2e.spec.ts",
+              "line": 117,
+              "column": 3
+            },
+            {
+              "title": "should not appear in taskbar/dock switcher",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0e6b58636a2397497ba5-7b4b5ebde9c894232665",
+              "file": "panel-window.e2e.spec.ts",
+              "line": 147,
+              "column": 3
+            },
+            {
+              "title": "should accept keyboard input without stealing focus",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0e6b58636a2397497ba5-97611ef758d6c48a2cdd",
+              "file": "panel-window.e2e.spec.ts",
+              "line": 164,
+              "column": 3
+            },
+            {
+              "title": "should handle window lifecycle events",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0e6b58636a2397497ba5-d1a524961aa36a764fc7",
+              "file": "panel-window.e2e.spec.ts",
+              "line": 179,
+              "column": 3
+            },
+            {
+              "title": "should become closable before app quit",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0e6b58636a2397497ba5-e6e4fc5b33d0a3061684",
+              "file": "panel-window.e2e.spec.ts",
+              "line": 200,
+              "column": 3
+            },
+            {
+              "title": "should handle console message filtering for MCP debug",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0e6b58636a2397497ba5-74b1e4753981131fae2d",
+              "file": "panel-window.e2e.spec.ts",
+              "line": 221,
+              "column": 3
+            },
+            {
+              "title": "should maintain correct bounds after screen resolution changes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "electron-main",
+                  "projectName": "electron-main",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0e6b58636a2397497ba5-2e8291b4bc2483654031",
+              "file": "panel-window.e2e.spec.ts",
+              "line": 246,
+              "column": 3
+            }
+          ],
+          "suites": [
+            {
+              "title": "Platform-specific panel behavior",
+              "file": "panel-window.e2e.spec.ts",
+              "line": 44,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "macOS: should have native panel properties",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0e6b58636a2397497ba5-a9dadf03bd5a265a6c46",
+                  "file": "panel-window.e2e.spec.ts",
+                  "line": 45,
+                  "column": 5
+                },
+                {
+                  "title": "Windows/Linux: should have simulated panel behavior",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 60000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "electron-main",
+                      "projectName": "electron-main",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "0e6b58636a2397497ba5-e91165e727b45b1d31f9",
+                  "file": "panel-window.e2e.spec.ts",
+                  "line": 57,
+                  "column": 5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-08-07T21:51:33.291Z",
+    "duration": 172.48400000000004,
+    "expected": 0,
+    "skipped": 77,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

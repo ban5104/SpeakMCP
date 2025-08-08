@@ -21,7 +21,7 @@ export interface MCPConfig {
 }
 
 export type Config = {
-  shortcut?: "hold-ctrl" | "ctrl-slash"
+  shortcut?: "hold-ctrl" | "ctrl-slash" | "double-tap-ctrl"
   hideDockIcon?: boolean
 
   sttProviderId?: STT_PROVIDER_ID

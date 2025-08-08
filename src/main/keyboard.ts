@@ -10,13 +10,14 @@ import { configStore } from "./config"
 import { state } from "./state"
 import { spawn, ChildProcess } from "child_process"
 import path from "path"
+import fs from "fs"
 import { isAccessibilityGranted } from "./utils"
 
 let binaryName: string;
 
 switch (process.platform) {
   case 'darwin': // This is macOS
-    binaryName = 'speakmcp-rs-mac';
+    binaryName = 'speakmcp-rs';
     break;
   case 'win32': // This is Windows
     binaryName = 'speakmcp-rs.exe';
@@ -28,9 +29,19 @@ switch (process.platform) {
     throw new Error(`Unsupported platform for rdev: ${process.platform}`);
 }
 
-const rdevPath = path
-  .join(__dirname, `../../resources/bin/${binaryName}`)
-  .replace("app.asar", "app.asar.unpacked")
+// When packaged, extraResources copies the resources folder structure to the Resources directory
+const rdevPath = process.resourcesPath
+  ? path.join(process.resourcesPath, 'resources', 'bin', binaryName)
+  : path.join(__dirname, `../../resources/bin/${binaryName}`)
+
+// Check if the Rust binary exists
+const isBinaryAvailable = () => {
+  try {
+    return fs.existsSync(rdevPath)
+  } catch (error) {
+    return false
+  }
+}
 
 type RdevEvent = {
   event_type: "KeyPress" | "KeyRelease"
@@ -44,6 +55,14 @@ type RdevEvent = {
 
 export const writeText = (text: string) => {
   return new Promise<void>((resolve, reject) => {
+    if (!isBinaryAvailable()) {
+      console.warn("⚠️  Rust binary not available - text insertion disabled")
+      console.warn("💡 Install Rust toolchain and run 'pnpm run build-rs' to enable text insertion")
+      // Resolve gracefully instead of rejecting to prevent app crashes
+      resolve()
+      return
+    }
+
     const child: ChildProcess = spawn(rdevPath, ["write", text])
 
     let stderr = ""
@@ -104,6 +123,11 @@ export function listenToKeyboardEvents() {
   let startRecordingTimer: NodeJS.Timeout | undefined
   let isPressedCtrlKey = false
 
+  // Double-tap Control detection state
+  let lastCtrlPressTime = 0
+  let doubleTapTimer: NodeJS.Timeout | undefined
+  const DOUBLE_TAP_WINDOW = 300 // 300ms window for double-tap detection
+
   // MCP tool calling state
   let isHoldingCtrlAltKey = false
   let startMcpRecordingTimer: NodeJS.Timeout | undefined
@@ -124,6 +148,13 @@ export function listenToKeyboardEvents() {
     if (startMcpRecordingTimer) {
       clearTimeout(startMcpRecordingTimer)
       startMcpRecordingTimer = undefined
+    }
+  }
+
+  const clearDoubleTapTimer = () => {
+    if (doubleTapTimer) {
+      clearTimeout(doubleTapTimer)
+      doubleTapTimer = undefined
     }
   }
 
@@ -167,6 +198,39 @@ export function listenToKeyboardEvents() {
       if (config.shortcut === "ctrl-slash") {
         if (e.data.key === "Slash" && isPressedCtrlKey) {
           getWindowRendererHandlers("panel")?.startOrFinishRecording.send()
+        }
+      } else if (config.shortcut === "double-tap-ctrl") {
+        if (e.data.key === "ControlLeft") {
+          if (hasRecentKeyPress()) {
+            console.log("ignore ctrl because other keys are pressed", [
+              ...keysPressed.keys(),
+            ])
+            return
+          }
+
+          const currentTime = Date.now()
+          const timeSinceLastTap = currentTime - lastCtrlPressTime
+
+          if (timeSinceLastTap <= DOUBLE_TAP_WINDOW && lastCtrlPressTime > 0) {
+            // Double-tap detected!
+            console.log("Double-tap Control detected! Starting recording")
+            clearDoubleTapTimer()
+            lastCtrlPressTime = 0 // Reset to prevent triple-tap
+            getWindowRendererHandlers("panel")?.startOrFinishRecording.send()
+          } else {
+            // First tap or too long since last tap
+            lastCtrlPressTime = currentTime
+            clearDoubleTapTimer()
+            
+            // Set timer to reset if no second tap occurs
+            doubleTapTimer = setTimeout(() => {
+              lastCtrlPressTime = 0
+            }, DOUBLE_TAP_WINDOW)
+          }
+        } else {
+          keysPressed.set(e.data.key, e.time.secs_since_epoch)
+          clearDoubleTapTimer()
+          lastCtrlPressTime = 0 // Reset double-tap detection when other keys are pressed
         }
       } else {
         if (e.data.key === "ControlLeft") {
@@ -250,7 +314,7 @@ export function listenToKeyboardEvents() {
         console.log(`[MCP-DEBUG] Alt released, isPressedCtrlAltKey: ${isPressedCtrlAltKey}`)
       }
 
-      if (configStore.get().shortcut === "ctrl-slash") return
+      if (configStore.get().shortcut === "ctrl-slash" || configStore.get().shortcut === "double-tap-ctrl") return
 
       cancelRecordingTimer()
       cancelMcpRecordingTimer()

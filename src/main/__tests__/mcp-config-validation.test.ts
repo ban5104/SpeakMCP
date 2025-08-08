@@ -27,7 +27,7 @@ const validateMcpConfig = (config: MCPConfig): { valid: boolean; error?: string 
 
     return { valid: true }
   } catch (error) {
-    return { valid: false, error: error.message }
+    return { valid: false, error: (error as Error).message }
   }
 }
 

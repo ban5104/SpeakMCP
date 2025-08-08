@@ -94,7 +94,7 @@ describe('Panel Window Behavior', () => {
     vi.mocked(screen.getCursorScreenPoint).mockReturnValue({ x: 100, y: 100 })
     vi.mocked(screen.getDisplayNearestPoint).mockReturnValue({
       workArea: { x: 0, y: 0, width: 1920, height: 1080 }
-    })
+    } as any)
     
     // Setup tipc mock
     vi.mocked(getRendererHandlers).mockReturnValue(mockRendererHandlers as any)
@@ -143,7 +143,7 @@ describe('Panel Window Behavior', () => {
       const mockScreen = {
         workArea: { x: 100, y: 50, width: 1920, height: 1080 }
       }
-      vi.mocked(screen.getDisplayNearestPoint).mockReturnValue(mockScreen)
+      vi.mocked(screen.getDisplayNearestPoint).mockReturnValue(mockScreen as any)
       
       createPanelWindow()
       
@@ -236,7 +236,7 @@ describe('Panel Window Behavior', () => {
       const mockScreen = {
         workArea: { x: 200, y: 100, width: 1680, height: 1050 }
       }
-      vi.mocked(screen.getDisplayNearestPoint).mockReturnValue(mockScreen)
+      vi.mocked(screen.getDisplayNearestPoint).mockReturnValue(mockScreen as any)
       
       showPanelWindow()
       
@@ -381,7 +381,9 @@ describe('Panel Window Behavior', () => {
         // Reset mocks for each test case
         vi.clearAllMocks()
         vi.mocked(BrowserWindow).mockImplementation(() => mockBrowserWindow as any)
-        vi.mocked(screen.getDisplayNearestPoint).mockReturnValue({ workArea: screenConfig })
+        vi.mocked(screen.getDisplayNearestPoint).mockReturnValue({
+          workArea: screenConfig
+        } as any)
         
         createPanelWindow()
         

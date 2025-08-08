@@ -114,7 +114,29 @@ SpeakMCP is an AI-powered dictation tool built with Electron that integrates wit
 - Testing required on both platforms
 - Dependency compatibility across Electron versions
 
-### Known Dependency Issues
+### Known Issues & Solutions
+
+#### macOS Accessibility Permissions
+**Problem**: App shows "Enable in System Settings" even after granting accessibility permissions.
+
+**Root Cause**: macOS requires apps to be properly code-signed for accessibility permissions to work correctly. Unsigned Electron apps cannot properly use accessibility APIs even when permissions are granted.
+
+**Solution**:
+1. The app must be ad-hoc signed after building:
+   ```bash
+   pnpm build:unpack
+   codesign --force --deep --sign - dist/mac-arm64/speakmcp.app
+   ```
+2. Reset accessibility permissions if needed:
+   ```bash
+   tccutil reset Accessibility
+   ```
+3. Launch the signed app and grant permissions when prompted
+4. The app will now properly detect granted accessibility permissions
+
+**Note**: The build configuration has been updated to use ad-hoc signing by default when no certificate is available (`identity: null` in electron-builder.config.cjs).
+
+#### Dependency Issues
 - `@egoist/electron-panel-window@^8.0.3` - Critical dependency for panel window functionality
 - Consider alternatives if installation issues persist:
   - `@akiflow/electron-panel-window` (more recently maintained)
@@ -137,6 +159,38 @@ SpeakMCP is an AI-powered dictation tool built with Electron that integrates wit
 - Test MCP servers using `scripts/mock-mcp-server.mjs`
 - MCP config validation in `src/main/__tests__/mcp-config-validation.test.ts`
 - Server connection testing and debugging via debug logs prefixed with `[MCP-DEBUG]`
+
+### Resource Packaging & Build Issues
+
+#### Resource Inclusion Fix (Resolved)
+The build process had an issue where the Rust binary and resource files weren't being included in the final Electron app package. This was resolved by:
+
+**Root Cause**: `extraResources` configuration in `electron-builder.config.cjs` wasn't properly copying the `resources/` folder to the built app.
+
+**Solution**: Added post-build scripts that automatically copy resources after electron-builder runs:
+- `copy-resources-mac`: `cp -r resources dist/mac*/speakmcp.app/Contents/Resources/`
+- `copy-resources-win`: `xcopy /E /I /Y resources dist\\win-unpacked\\resources`
+- `copy-resources-linux`: `cp -r resources dist/linux*/resources/`
+
+**Key Files Modified**:
+- `package.json` - Added resource copy scripts to build commands
+- `src/main/tray.ts` - Updated icon paths to use `process.resourcesPath` when packaged
+- `src/main/keyboard.ts` - Binary path already correctly configured
+
+#### Build Verification Checklist
+Before considering a build ready for deployment:
+1. ✅ Run `pnpm build:unpack` without manual file copying
+2. ✅ Verify binary exists: `ls dist/mac*/speakmcp.app/Contents/Resources/resources/bin/speakmcp-rs`
+3. ✅ Verify icons exist: `ls dist/mac*/speakmcp.app/Contents/Resources/resources/*.png`
+4. ✅ Launch app: `open dist/mac*/speakmcp.app`
+5. ✅ Confirm app processes running: `ps aux | grep speakmcp | grep -v grep`
+6. ✅ Test tray icon loads without "Failed to load image" errors
+7. ✅ Verify keyboard monitoring starts (check for Rust binary spawn)
+
+#### Resource Path Patterns
+- **Development**: `resources/bin/speakmcp-rs` (relative to project root)
+- **Packaged**: `process.resourcesPath/resources/bin/speakmcp-rs`
+- **Icons**: Same pattern for all `.png` and `.ico` files in `resources/`
 
 ## Build Dependencies
 

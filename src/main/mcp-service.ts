@@ -35,7 +35,7 @@ export interface LLMToolCallResponse {
   toolCalls?: MCPToolCall[]
 }
 
-class MCPService {
+export class MCPService {
   private clients: Map<string, Client> = new Map()
   private transports: Map<string, StdioClientTransport> = new Map()
   private availableTools: MCPTool[] = []
@@ -354,7 +354,7 @@ class MCPService {
     }
   }
 
-  private async createTestConnection(serverName: string, serverConfig: MCPServerConfig): Promise<{ success: boolean; error?: string; toolCount?: number }> {
+  private async createTestConnection(_serverName: string, serverConfig: MCPServerConfig): Promise<{ success: boolean; error?: string; toolCount?: number }> {
     let transport: StdioClientTransport | null = null
     let client: Client | null = null
 

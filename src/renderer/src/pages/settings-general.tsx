@@ -55,7 +55,7 @@ export function Component() {
 
   const sttProviderId: STT_PROVIDER_ID =
     configQuery.data?.sttProviderId || "openai"
-  const shortcut = configQuery.data?.shortcut || "hold-ctrl"
+  const shortcut = configQuery.data?.shortcut || "double-tap-ctrl"
   const transcriptPostProcessingProviderId: CHAT_PROVIDER_ID =
     configQuery.data?.transcriptPostProcessingProviderId || "openai"
 
@@ -85,6 +85,8 @@ export function Component() {
             <div>
               {shortcut === "hold-ctrl"
                 ? "Hold Ctrl key to record, release it to finish recording"
+                : shortcut === "double-tap-ctrl"
+                ? "Double-tap Ctrl key to start and finish recording"
                 : "Press Ctrl+/ to start and finish recording"}
             </div>
             <TooltipProvider disableHoverableContent delayDuration={0}>
@@ -95,6 +97,8 @@ export function Component() {
                 <TooltipContent collisionPadding={5}>
                   {shortcut === "hold-ctrl"
                     ? "Press any key to cancel"
+                    : shortcut === "double-tap-ctrl"
+                    ? "Press Esc to cancel recording"
                     : "Press Esc to cancel"}
                 </TooltipContent>
               </Tooltip>
@@ -116,6 +120,7 @@ export function Component() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="hold-ctrl">Hold Ctrl</SelectItem>
+              <SelectItem value="double-tap-ctrl">Double-tap Ctrl</SelectItem>
               <SelectItem value="ctrl-slash">Ctrl+{"/"}</SelectItem>
             </SelectContent>
           </Select>
