@@ -114,7 +114,29 @@ SpeakMCP is an AI-powered dictation tool built with Electron that integrates wit
 - Testing required on both platforms
 - Dependency compatibility across Electron versions
 
-### Known Dependency Issues
+### Known Issues & Solutions
+
+#### macOS Accessibility Permissions
+**Problem**: App shows "Enable in System Settings" even after granting accessibility permissions.
+
+**Root Cause**: macOS requires apps to be properly code-signed for accessibility permissions to work correctly. Unsigned Electron apps cannot properly use accessibility APIs even when permissions are granted.
+
+**Solution**:
+1. The app must be ad-hoc signed after building:
+   ```bash
+   pnpm build:unpack
+   codesign --force --deep --sign - dist/mac-arm64/speakmcp.app
+   ```
+2. Reset accessibility permissions if needed:
+   ```bash
+   tccutil reset Accessibility
+   ```
+3. Launch the signed app and grant permissions when prompted
+4. The app will now properly detect granted accessibility permissions
+
+**Note**: The build configuration has been updated to use ad-hoc signing by default when no certificate is available (`identity: null` in electron-builder.config.cjs).
+
+#### Dependency Issues
 - `@egoist/electron-panel-window@^8.0.3` - Critical dependency for panel window functionality
 - Consider alternatives if installation issues persist:
   - `@akiflow/electron-panel-window` (more recently maintained)

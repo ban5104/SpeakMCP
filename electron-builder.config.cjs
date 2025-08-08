@@ -37,7 +37,7 @@ module.exports = {
     binaries: ["resources/bin/speakmcp-rs"],
     artifactName: "${productName}-${version}-${arch}.${ext}",
     entitlementsInherit: "build/entitlements.mac.plist",
-    identity: process.env.CSC_NAME || "Apple Development",
+    identity: process.env.CSC_NAME || null,  // Use ad-hoc signing when no certificate is available
     extendInfo: [
       {
         NSCameraUsageDescription:
