@@ -1,6 +1,6 @@
 import fs from "fs"
+import path from "path"
 import { getRendererHandlers, tipc } from "@egoist/tipc/main"
-import { showPanelWindow, WINDOWS } from "./window"
 import {
   app,
   clipboard,
@@ -9,9 +9,9 @@ import {
   systemPreferences,
   dialog,
 } from "electron"
-import path from "path"
-import { configStore, recordingsFolder } from "./config"
 import { Config, RecordingHistoryItem, MCPConfig, MCPServerConfig } from "../shared/types"
+import { showPanelWindow, WINDOWS } from "./window"
+import { configStore, recordingsFolder } from "./config"
 import { RendererHandlers } from "./renderer-handlers"
 import { postProcessTranscript, processTranscriptWithTools } from "./llm"
 import { mcpService, MCPToolResult } from "./mcp-service"
@@ -45,8 +45,25 @@ const saveRecordingsHitory = (history: RecordingHistoryItem[]) => {
 
 export const router = {
   restartApp: t.procedure.action(async () => {
-    app.relaunch()
-    app.quit()
+    // Give a small delay to ensure UI feedback is shown
+    setTimeout(() => {
+      // Close all windows gracefully before relaunch
+      const allWindows = WINDOWS.values()
+      for (const window of allWindows) {
+        if (window && !window.isDestroyed()) {
+          window.close()
+        }
+      }
+      
+      // Clear the windows map
+      WINDOWS.clear()
+      
+      // Relaunch with a small delay to avoid race conditions
+      setTimeout(() => {
+        app.relaunch()
+        app.quit()
+      }, 100)
+    }, 200)
   }),
 
   getUpdateInfo: t.procedure.action(async () => {
@@ -126,6 +143,24 @@ export const router = {
 
   isAccessibilityGranted: t.procedure.action(async () => {
     return isAccessibilityGranted()
+  }),
+
+  switchToMainWindow: t.procedure.action(async () => {
+    const { createMainWindow } = await import("./window")
+    
+    // Close setup window if it exists
+    const setupWindow = WINDOWS.get("setup")
+    if (setupWindow && !setupWindow.isDestroyed()) {
+      setupWindow.close()
+      WINDOWS.delete("setup")
+    }
+    
+    // Create main window if it doesn't exist
+    if (!WINDOWS.get("main")) {
+      createMainWindow()
+    }
+    
+    return true
   }),
 
 

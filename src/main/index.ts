@@ -1,5 +1,6 @@
 import { app, Menu } from "electron"
 import { electronApp, optimizer } from "@electron-toolkit/utils"
+import { registerIpcMain } from "@egoist/tipc/main"
 import {
   createMainWindow,
   createPanelWindow,
@@ -8,7 +9,6 @@ import {
   WINDOWS,
 } from "./window"
 import { listenToKeyboardEvents } from "./keyboard"
-import { registerIpcMain } from "@egoist/tipc/main"
 import { router } from "./tipc"
 import { registerServeProtocol, registerServeSchema } from "./serve"
 import { createAppMenu } from "./menu"
@@ -24,15 +24,14 @@ app.whenReady().then(() => {
   // Set app user model id for windows
   electronApp.setAppUserModelId(process.env.APP_ID)
 
-  const accessibilityGranted = isAccessibilityGranted()
-
   Menu.setApplicationMenu(createAppMenu())
 
   registerIpcMain(router)
 
   registerServeProtocol()
 
-  if (accessibilityGranted) {
+  // Check accessibility permissions dynamically at startup
+  if (isAccessibilityGranted()) {
     createMainWindow()
   } else {
     createSetupWindow()
@@ -54,7 +53,8 @@ app.whenReady().then(() => {
   })
 
   app.on("activate", function () {
-    if (accessibilityGranted) {
+    // Always check permissions fresh when app is activated
+    if (isAccessibilityGranted()) {
       if (!WINDOWS.get("main")) {
         createMainWindow()
       }

@@ -1,7 +1,7 @@
 import electronUpdater, { UpdateInfo } from "electron-updater"
 import { MenuItem, dialog } from "electron"
-import { makePanelWindowClosable, WINDOWS } from "./window"
 import { getRendererHandlers } from "@egoist/tipc/main"
+import { makePanelWindowClosable, WINDOWS } from "./window"
 import { RendererHandlers } from "./renderer-handlers"
 
 electronUpdater.autoUpdater.fullChangelog = true

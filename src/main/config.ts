@@ -1,6 +1,6 @@
-import { app } from "electron"
 import path from "path"
 import fs from "fs"
+import { app } from "electron"
 import { Config } from "@shared/types"
 
 export const dataFolder = path.join(app.getPath("appData"), process.env.APP_ID)

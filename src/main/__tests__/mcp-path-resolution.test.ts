@@ -1,8 +1,8 @@
-import { describe, it, expect, vi } from 'vitest'
 import path from 'path'
 import os from 'os'
 import { access, constants } from 'fs'
 import { promisify } from 'util'
+import { describe, it, expect, vi } from 'vitest'
 
 const accessAsync = promisify(access)
 

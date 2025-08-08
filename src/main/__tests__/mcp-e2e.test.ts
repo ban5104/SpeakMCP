@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { spawn, ChildProcess } from 'child_process'
 import path from 'path'
 import fs from 'fs'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 
 /**
  * End-to-End tests for MCP functionality

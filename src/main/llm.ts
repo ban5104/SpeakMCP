@@ -54,7 +54,7 @@ function extractAndParseJSON(responseText: string): LLMToolCallResponse | null {
 
   // Try to extract JSON from markdown code blocks
   const codeBlockRegex = /```(?:json)?\s*(\{[\s\S]*?\})\s*```/gi
-  let match = codeBlockRegex.exec(responseText)
+  const match = codeBlockRegex.exec(responseText)
 
   if (match) {
     try {

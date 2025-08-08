@@ -1,3 +1,7 @@
+import { spawn, ChildProcess } from "child_process"
+import path from "path"
+import fs from "fs"
+import { systemPreferences } from "electron"
 import {
   getWindowRendererHandlers,
   showPanelWindowAndStartRecording,
@@ -5,12 +9,8 @@ import {
   stopRecordingAndHidePanelWindow,
   WINDOWS,
 } from "./window"
-import { systemPreferences } from "electron"
 import { configStore } from "./config"
 import { state } from "./state"
-import { spawn, ChildProcess } from "child_process"
-import path from "path"
-import fs from "fs"
 import { isAccessibilityGranted } from "./utils"
 
 let binaryName: string;
@@ -29,10 +29,27 @@ switch (process.platform) {
     throw new Error(`Unsupported platform for rdev: ${process.platform}`);
 }
 
-// When packaged, extraResources copies the resources folder structure to the Resources directory
-const rdevPath = process.resourcesPath
-  ? path.join(process.resourcesPath, 'resources', 'bin', binaryName)
-  : path.join(__dirname, `../../resources/bin/${binaryName}`)
+// When packaged, the binary could be in either location depending on electron-builder config
+const getPackagedBinaryPath = () => {
+  // Try process.resourcesPath first (electron-builder extraResources)
+  if (process.resourcesPath) {
+    const resourcesPath = path.join(process.resourcesPath, 'resources', 'bin', binaryName)
+    if (fs.existsSync(resourcesPath)) {
+      return resourcesPath
+    }
+    
+    // Try app.asar.unpacked location (electron-vite + electron-builder)
+    const asarUnpackedPath = path.join(process.resourcesPath, 'app.asar.unpacked', 'resources', 'bin', binaryName)
+    if (fs.existsSync(asarUnpackedPath)) {
+      return asarUnpackedPath
+    }
+  }
+  
+  // Development path
+  return path.join(__dirname, `../../resources/bin/${binaryName}`)
+}
+
+const rdevPath = getPackagedBinaryPath()
 
 // Check if the Rust binary exists
 const isBinaryAvailable = () => {
@@ -133,7 +150,18 @@ export function listenToKeyboardEvents() {
   let startMcpRecordingTimer: NodeJS.Timeout | undefined
   let isPressedCtrlAltKey = false
 
+  console.log(`[KEYBOARD-DEBUG] Starting keyboard listener...`)
+  console.log(`[KEYBOARD-DEBUG] Accessibility granted: ${isAccessibilityGranted()}`)
+  console.log(`[KEYBOARD-DEBUG] Binary path: ${rdevPath}`)
+  console.log(`[KEYBOARD-DEBUG] Binary available: ${isBinaryAvailable()}`)
+
   if (!isAccessibilityGranted()) {
+    console.log(`[KEYBOARD-DEBUG] ❌ Accessibility not granted, keyboard monitoring disabled`)
+    return
+  }
+
+  if (!isBinaryAvailable()) {
+    console.log(`[KEYBOARD-DEBUG] ❌ Rust binary not available at: ${rdevPath}`)
     return
   }
 
@@ -348,7 +376,16 @@ export function listenToKeyboardEvents() {
     }
   }
 
+  console.log(`[KEYBOARD-DEBUG] Starting keyboard monitoring process: ${rdevPath} listen`)
   const child = spawn(rdevPath, ["listen"], {})
+
+  child.on("error", (error) => {
+    console.error(`[KEYBOARD-DEBUG] ❌ Failed to spawn keyboard monitoring process:`, error)
+  })
+
+  child.on("close", (code) => {
+    console.log(`[KEYBOARD-DEBUG] ⚠️ Keyboard monitoring process closed with code: ${code}`)
+  })
 
   child.stdout.on("data", (data) => {
     if (import.meta.env.DEV) {

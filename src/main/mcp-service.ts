@@ -1,12 +1,12 @@
-import { Client } from "@modelcontextprotocol/sdk/client/index.js"
-import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
-import { configStore } from "./config"
-import { MCPConfig, MCPServerConfig } from "../shared/types"
 import { spawn, ChildProcess } from "child_process"
 import { promisify } from "util"
 import { access, constants } from "fs"
 import path from "path"
 import os from "os"
+import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
+import { Client } from "@modelcontextprotocol/sdk/client/index.js"
+import { MCPConfig, MCPServerConfig } from "../shared/types"
+import { configStore } from "./config"
 
 const accessAsync = promisify(access)
 

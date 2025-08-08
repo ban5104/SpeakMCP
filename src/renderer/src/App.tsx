@@ -1,7 +1,7 @@
 import { RouterProvider } from "react-router-dom"
-import { router } from "./router"
 import { lazy, Suspense } from "react"
 import { Toaster } from "sonner"
+import { router } from "./router"
 
 const Updater = lazy(() => import("./components/updater"))
 

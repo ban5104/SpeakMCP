@@ -1,7 +1,7 @@
 import { useMicrphoneStatusQuery } from "@renderer/lib/query-client"
-import { Button } from "./ui/button"
 import { tipcClient } from "@renderer/lib/tipc-client"
 import { useQuery } from "@tanstack/react-query"
+import { Button } from "./ui/button"
 
 export function Setup() {
   const microphoneStatusQuery = useMicrphoneStatusQuery()

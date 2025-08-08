@@ -2,9 +2,9 @@ import "./css/tailwind.css"
 import "./css/spinner.css"
 import React from "react"
 import ReactDOM from "react-dom/client"
+import { QueryClientProvider } from "@tanstack/react-query"
 import App from "./App"
 import { tipcClient } from "./lib/tipc-client"
-import { QueryClientProvider } from "@tanstack/react-query"
 import { queryClient } from "./lib/query-client"
 
 

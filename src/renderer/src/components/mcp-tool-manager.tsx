@@ -6,7 +6,6 @@ import { Button } from "@renderer/components/ui/button"
 import { Input } from "@renderer/components/ui/input"
 import { Label } from "@renderer/components/ui/label"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@renderer/components/ui/dialog"
-
 import { Search, ChevronDown, ChevronRight, Settings, Eye, EyeOff } from "lucide-react"
 import { tipcClient } from "@renderer/lib/tipc-client"
 import { toast } from "sonner"

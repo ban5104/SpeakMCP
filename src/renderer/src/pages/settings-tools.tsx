@@ -6,7 +6,6 @@ import { Label } from "@renderer/components/ui/label"
 import { Switch } from "@renderer/components/ui/switch"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@renderer/components/ui/select"
 import { Textarea } from "@renderer/components/ui/textarea"
-
 import { CHAT_PROVIDERS } from "@shared/index"
 import { Config, MCPConfig } from "@shared/types"
 import { MCPConfigManager } from "@renderer/components/mcp-config-manager"

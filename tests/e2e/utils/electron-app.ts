@@ -1,6 +1,6 @@
+import * as path from 'path'
 import { ElectronApplication, Page } from '@playwright/test'
 import { _electron as electron } from 'playwright'
-import * as path from 'path'
 import { BrowserWindow } from 'electron'
 
 export interface ElectronAppContext {

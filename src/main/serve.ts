@@ -1,6 +1,6 @@
-import { protocol, ProtocolRequest, ProtocolResponse } from "electron"
 import path from "path"
 import fs from "fs"
+import { protocol, ProtocolRequest, ProtocolResponse } from "electron"
 import { recordingsFolder } from "./config"
 
 const rendererDir = path.join(__dirname, "../renderer")

@@ -46,7 +46,7 @@ module.exports = {
   compression: "maximum",
   
   // Use pnpm instead of npm
-  npmRebuild: "pnpm",
+  npmRebuild: false,
   
   // Publishing configuration
   publish: {
@@ -57,7 +57,4 @@ module.exports = {
   
   // Common build settings
   removePackageScripts: true,
-  
-  // Artifact name template used across platforms
-  artifactNameTemplate: "${productName}-${version}-${arch}.${ext}",
 };

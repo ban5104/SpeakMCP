@@ -1,8 +1,8 @@
 import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import { MCPConfigManager } from '../mcp-config-manager'
 import { MCPConfig } from '@shared/types'
 import { toast } from 'sonner'
+import { MCPConfigManager } from '../mcp-config-manager'
 
 // Mock dependencies
 jest.mock('@renderer/lib/tipc-client', () => ({

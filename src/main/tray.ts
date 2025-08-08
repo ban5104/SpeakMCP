@@ -1,5 +1,5 @@
-import { Menu, Tray } from "electron"
 import path from "path"
+import { Menu, Tray } from "electron"
 import {
   getWindowRendererHandlers,
   showMainWindow,

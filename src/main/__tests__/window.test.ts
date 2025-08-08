@@ -1,5 +1,6 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { BrowserWindow, screen, app, shell } from 'electron'
+import { getRendererHandlers } from '@egoist/tipc/main'
 import {
   createMainWindow,
   createSetupWindow,
@@ -14,7 +15,6 @@ import {
   WINDOWS
 } from '../window'
 import { makePanel, makeKeyWindow, makeWindow } from '../panel-window-manager'
-import { getRendererHandlers } from '@egoist/tipc/main'
 import { configStore } from '../config'
 
 // Mock Electron modules

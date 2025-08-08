@@ -2,13 +2,33 @@ import { useMicrphoneStatusQuery } from "@renderer/lib/query-client"
 import { Button } from "@renderer/components/ui/button"
 import { tipcClient } from "@renderer/lib/tipc-client"
 import { useQuery } from "@tanstack/react-query"
+import { useEffect } from "react"
 
 export function Component() {
   const microphoneStatusQuery = useMicrphoneStatusQuery()
   const isAccessibilityGrantedQuery = useQuery({
     queryKey: ["setup-isAccessibilityGranted"],
     queryFn: () => tipcClient.isAccessibilityGranted(),
+    // Poll every 2 seconds to detect permission changes
+    refetchInterval: 2000,
+    // Keep refetching even when window is not focused
+    refetchIntervalInBackground: true,
   })
+
+  // Auto-switch to main window when permissions are granted
+  useEffect(() => {
+    if (process.env.IS_MAC && isAccessibilityGrantedQuery.data === true) {
+      // Small delay to ensure permission state is stable
+      const timeoutId = setTimeout(() => {
+        tipcClient.switchToMainWindow().catch(console.error)
+      }, 500)
+      
+      return () => clearTimeout(timeoutId)
+    }
+    
+    // Return undefined for other cases
+    return undefined
+  }, [isAccessibilityGrantedQuery.data])
 
   return (
     <div className="app-drag-region flex h-dvh items-center justify-center p-10">

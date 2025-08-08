@@ -241,13 +241,16 @@ fn listen_for_events() -> Result<(), Box<dyn std::error::Error>> {
     let platform_info = platform::get_platform_info();
     eprintln!("Starting keyboard event listener on {}", platform_info);
 
-    listen(move |event| match event.event_type {
+    if let Err(e) = listen(move |event| match event.event_type {
         EventType::KeyPress(_) | EventType::KeyRelease(_) => {
             let event = deal_event_to_json(event);
             println!("{}", serde_json::to_string(&event).unwrap());
         }
         _ => {}
-    })?;
+    }) {
+        eprintln!("Error listening for events: {:?}", e);
+        return Err(format!("Listen error: {:?}", e).into());
+    }
 
     Ok(())
 }
@@ -311,7 +314,8 @@ fn show_platform_info() {
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let program_name = args.get(0).unwrap_or(&"speakmcp-rs".to_string());
+    let default_name = "speakmcp-rs".to_string();
+    let program_name = args.get(0).unwrap_or(&default_name);
 
     match args.get(1).map(|s| s.as_str()) {
         Some("listen") => {
