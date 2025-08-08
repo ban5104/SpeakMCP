@@ -153,10 +153,13 @@ describe('MCPService', () => {
     it('should handle unknown tools', async () => {
       await mcpService.initialize()
 
-      await expect(mcpService.executeToolCall({
+      const result = await mcpService.executeToolCall({
         name: 'unknown_tool',
         arguments: {}
-      })).rejects.toThrow('Unknown tool: unknown_tool')
+      })
+
+      expect(result.isError).toBe(true)
+      expect(result.content[0].text).toContain('Unknown tool: unknown_tool')
     })
   })
 

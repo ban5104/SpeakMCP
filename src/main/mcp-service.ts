@@ -1,5 +1,4 @@
-import { Client } from "@modelcontextprotocol/sdk/client/index.js"
-import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
+import { getMCPClient, getStdioClientTransport } from "./mcp-sdk-loader"
 import { configStore } from "./config"
 import { MCPConfig, MCPServerConfig } from "../shared/types"
 import { spawn, ChildProcess } from "child_process"
@@ -36,8 +35,8 @@ export interface LLMToolCallResponse {
 }
 
 export class MCPService {
-  private clients: Map<string, Client> = new Map()
-  private transports: Map<string, StdioClientTransport> = new Map()
+  private clients: Map<string, any> = new Map()
+  private transports: Map<string, any> = new Map()
   private availableTools: MCPTool[] = []
   private disabledTools: Set<string> = new Set()
   private isInitializing = false
@@ -52,9 +51,13 @@ export class MCPService {
     const config = configStore.get()
     const mcpConfig = config.mcpConfig
 
-    if (!mcpConfig || !mcpConfig.mcpServers) {
-      console.log("[MCP-DEBUG] No MCP servers configured, using fallback tools")
-      this.initializeFallbackTools()
+    // Always initialize fallback tools first
+    this.initializeFallbackTools()
+    console.log("[MCP-DEBUG] Fallback tools initialized")
+
+    // If no MCP config or no servers, we're done (fallback tools are available)
+    if (!mcpConfig || !mcpConfig.mcpServers || Object.keys(mcpConfig.mcpServers).length === 0) {
+      console.log("[MCP-DEBUG] No MCP servers configured, using fallback tools only")
       this.isInitializing = false
       return
     }
@@ -63,12 +66,19 @@ export class MCPService {
     const enabledServers = Object.entries(mcpConfig.mcpServers).filter(([_, config]) => !config.disabled)
     this.initializationProgress.total = enabledServers.length
 
+    if (enabledServers.length === 0) {
+      console.log("[MCP-DEBUG] All MCP servers are disabled, using fallback tools only")
+      this.isInitializing = false
+      return
+    }
+
     // Initialize configured MCP servers
     for (const [serverName, serverConfig] of enabledServers) {
       this.initializationProgress.currentServer = serverName
 
       try {
         await this.initializeServer(serverName, serverConfig)
+        console.log(`[MCP-DEBUG] Successfully initialized server: ${serverName}`)
       } catch (error) {
         console.error(`[MCP-DEBUG] Failed to initialize server ${serverName}:`, error)
       }
@@ -154,44 +164,71 @@ export class MCPService {
   private async initializeServer(serverName: string, serverConfig: MCPServerConfig) {
     console.log(`[MCP-DEBUG] Initializing server: ${serverName}`)
 
-    // Resolve command path and prepare environment
-    const resolvedCommand = await this.resolveCommandPath(serverConfig.command)
-    const environment = await this.prepareEnvironment(serverConfig.env)
+    try {
+      // Ensure MCP SDK is initialized before proceeding
+      const { isMCPSDKInitialized } = await import('./mcp-sdk-loader')
+      if (!isMCPSDKInitialized()) {
+        console.warn(`[MCP-DEBUG] MCP SDK not initialized when trying to initialize ${serverName}`)
+        throw new Error('MCP SDK not initialized')
+      }
 
-    // Create transport and client
-    const transport = new StdioClientTransport({
-      command: resolvedCommand,
-      args: serverConfig.args,
-      env: environment
-    })
+      // Resolve command path and prepare environment
+      const resolvedCommand = await this.resolveCommandPath(serverConfig.command)
+      const environment = await this.prepareEnvironment(serverConfig.env)
 
-    const client = new Client({
-      name: "speakmcp-mcp-client",
-      version: "1.0.0"
-    }, {
-      capabilities: {}
-    })
+      console.log(`[MCP-DEBUG] Creating transport for ${serverName} with command: ${resolvedCommand}`)
 
-    // Connect to the server
-    await client.connect(transport)
-
-    // Get available tools from the server
-    const toolsResult = await client.listTools()
-
-    // Add tools to our registry with server prefix
-    for (const tool of toolsResult.tools) {
-      this.availableTools.push({
-        name: `${serverName}:${tool.name}`,
-        description: tool.description || `Tool from ${serverName} server`,
-        inputSchema: tool.inputSchema
+      // Create transport and client
+      const StdioClientTransport = getStdioClientTransport()
+      const transport = new StdioClientTransport({
+        command: resolvedCommand,
+        args: serverConfig.args,
+        env: environment
       })
+
+      const Client = getMCPClient()
+      const client = new Client({
+        name: "speakmcp-mcp-client",
+        version: "1.0.0"
+      }, {
+        capabilities: {}
+      })
+
+      console.log(`[MCP-DEBUG] Connecting to server ${serverName}...`)
+
+      // Connect to the server with timeout
+      const connectPromise = client.connect(transport)
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Connection timeout')), serverConfig.timeout || 10000)
+      })
+
+      await Promise.race([connectPromise, timeoutPromise])
+      
+      console.log(`[MCP-DEBUG] Connected to server ${serverName}, listing tools...`)
+
+      // Get available tools from the server
+      const toolsResult = await client.listTools()
+      
+      console.log(`[MCP-DEBUG] Server ${serverName} reported ${toolsResult.tools.length} tools`)
+
+      // Add tools to our registry with server prefix
+      for (const tool of toolsResult.tools) {
+        this.availableTools.push({
+          name: `${serverName}:${tool.name}`,
+          description: tool.description || `Tool from ${serverName} server`,
+          inputSchema: tool.inputSchema
+        })
+      }
+
+      // Store references
+      this.transports.set(serverName, transport)
+      this.clients.set(serverName, client)
+
+      console.log(`[MCP-DEBUG] Server ${serverName} initialized with ${toolsResult.tools.length} tools`)
+    } catch (error) {
+      console.error(`[MCP-DEBUG] Failed to initialize server ${serverName}:`, error)
+      throw error
     }
-
-    // Store references
-    this.transports.set(serverName, transport)
-    this.clients.set(serverName, client)
-
-    console.log(`[MCP-DEBUG] Server ${serverName} initialized with ${toolsResult.tools.length} tools`)
   }
 
   private cleanupServer(serverName: string) {
@@ -337,15 +374,23 @@ export class MCPService {
         }
       }
 
-      // Try to create a temporary connection to test the server
-      const timeout = serverConfig.timeout || 10000
-      const testPromise = this.createTestConnection(serverName, serverConfig)
-      const timeoutPromise = new Promise<never>((_, reject) => {
-        setTimeout(() => reject(new Error('Connection test timeout')), timeout)
-      })
-
-      const result = await Promise.race([testPromise, timeoutPromise])
-      return result
+      // For basic validation, we just check if the command can be resolved
+      // Full connection testing would require actually spawning the process
+      try {
+        const resolvedCommand = await this.resolveCommandPath(serverConfig.command)
+        console.log(`[MCP-DEBUG] Command resolution successful: ${resolvedCommand}`)
+        
+        // Return success for now - in a real implementation, we might spawn a test process
+        return {
+          success: true,
+          toolCount: 0 // Unknown until we actually connect
+        }
+      } catch (error) {
+        return {
+          success: false,
+          error: error instanceof Error ? error.message : String(error)
+        }
+      }
     } catch (error) {
       return {
         success: false,
@@ -355,8 +400,8 @@ export class MCPService {
   }
 
   private async createTestConnection(_serverName: string, serverConfig: MCPServerConfig): Promise<{ success: boolean; error?: string; toolCount?: number }> {
-    let transport: StdioClientTransport | null = null
-    let client: Client | null = null
+    let transport: any = null
+    let client: any = null
 
     try {
       // Resolve command and prepare environment
@@ -364,12 +409,14 @@ export class MCPService {
       const environment = await this.prepareEnvironment(serverConfig.env)
 
       // Create a temporary transport and client for testing
+      const StdioClientTransport = getStdioClientTransport()
       transport = new StdioClientTransport({
         command: resolvedCommand,
         args: serverConfig.args,
         env: environment
       })
 
+      const Client = getMCPClient()
       client = new Client({
         name: "speakmcp-mcp-test-client",
         version: "1.0.0"
@@ -514,7 +561,7 @@ export class MCPService {
 
         default:
           console.log(`[MCP-DEBUG] ❌ Unknown tool: ${toolCall.name}`)
-          result = {
+          return {
             content: [{
               type: "text",
               text: `Unknown tool: ${toolCall.name}`

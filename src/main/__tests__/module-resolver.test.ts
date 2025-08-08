@@ -1,6 +1,7 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
 import Module from 'module'
 import path from 'path'
+import { createMockRequire, createMockRequireResolve } from './test-helpers'
 
 // Mock electron app
 vi.mock('electron', () => ({
@@ -77,7 +78,7 @@ describe('Module Resolver', () => {
       
       // Mock require.resolve to simulate successful resolution
       const originalResolve = require.resolve
-      require.resolve = vi.fn((request: string) => {
+      require.resolve = createMockRequireResolve((request: string) => {
         if (request.includes('ajv')) {
           return '/app/resources/app.asar/node_modules/ajv/dist/ajv.js'
         }

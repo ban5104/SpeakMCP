@@ -24,6 +24,67 @@ module.exports = {
   extraResources: [
     "resources/**/*"
   ],
+  // Unpack modules that have ESM resolution issues in ASAR
+  // This is a comprehensive list including the full dependency chain of problematic modules
+  asarUnpack: [
+    // Core MCP SDK modules
+    "**/node_modules/@modelcontextprotocol/**",
+    
+    // AJV and its ecosystem (used by MCP SDK for validation)
+    "**/node_modules/ajv/**",
+    "**/node_modules/ajv-keywords/**",
+    "**/node_modules/ajv-formats/**",
+    "**/node_modules/json-schema-traverse/**",
+    "**/node_modules/require-from-string/**",
+    "**/node_modules/fast-deep-equal/**",
+    "**/node_modules/json-schema-ref-parser/**",
+    
+    // cross-spawn and its complete dependency chain
+    "**/node_modules/cross-spawn/**",
+    "**/node_modules/path-key/**",
+    "**/node_modules/shebang-command/**",
+    "**/node_modules/shebang-regex/**",
+    "**/node_modules/which/**",
+    "**/node_modules/isexe/**",
+    
+    // Additional ESM modules that may cause issues
+    "**/node_modules/content-type/**",
+    "**/node_modules/cors/**",
+    "**/node_modules/eventsource/**",
+    "**/node_modules/eventsource-parser/**",
+    "**/node_modules/express/**",
+    "**/node_modules/express-rate-limit/**",
+    "**/node_modules/pkce-challenge/**",
+    "**/node_modules/raw-body/**",
+    
+    // Zod and related modules
+    "**/node_modules/zod/**",
+    "**/node_modules/zod-to-json-schema/**",
+    
+    // Node.js utility modules that may have ESM issues
+    "**/node_modules/semver/**",
+    "**/node_modules/uuid/**",
+    "**/node_modules/chalk/**",
+    "**/node_modules/debug/**",
+    "**/node_modules/ms/**",
+    
+    // TypeScript and compilation related (if dynamically loaded)
+    "**/node_modules/typescript/**",
+    "**/node_modules/ts-node/**",
+    
+    // Any modules with native bindings or complex resolution
+    "**/node_modules/**/*.node",
+    "**/node_modules/**/binding.gyp",
+    "**/node_modules/**/prebuilds/**",
+    
+    // Development dependencies that might be loaded dynamically
+    "**/node_modules/vitest/**",
+    "**/node_modules/playwright/**",
+    
+    // Fallback patterns for any missed ESM modules
+    "**/node_modules/**/{package.json,*.mjs,*.mts}",
+    "**/node_modules/**/{exports,main,module,types}/**"
+  ],
   win: {
     executableName: "speakmcp",
   },

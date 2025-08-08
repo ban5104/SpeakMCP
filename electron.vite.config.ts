@@ -15,7 +15,7 @@ const define = {
 
 export default defineConfig({
   main: {
-    plugins: [tsconfigPaths(), externalizeDepsPlugin({})],
+    plugins: [tsconfigPaths(), externalizeDepsPlugin({ exclude: ['cross-spawn'] })],
     define,
   },
   preload: {

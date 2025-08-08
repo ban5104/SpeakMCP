@@ -1,4 +1,12 @@
+// Apply module resolution patch BEFORE any imports that might use MCP SDK
+// This must be the very first thing we do to ensure proper module resolution in ASAR
+import { patchModuleResolution, preloadCriticalModules, registerESMHooks } from "./module-resolver"
+patchModuleResolution()
+preloadCriticalModules()
+registerESMHooks()
+
 import { app, Menu } from "electron"
+import { initializeMCPSDK } from "./mcp-sdk-loader"
 import { electronApp, optimizer } from "@electron-toolkit/utils"
 import {
   createMainWindow,
@@ -20,7 +28,9 @@ registerServeSchema()
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+  // Initialize MCP SDK before anything else
+  await initializeMCPSDK()
   // Set app user model id for windows
   electronApp.setAppUserModelId(process.env.APP_ID)
 

@@ -11,15 +11,15 @@
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
-    "typecheck": "npm run typecheck:node && npm run typecheck:web",
+    "typecheck": "pnpm run typecheck:node && pnpm run typecheck:web",
     "start": "electron-vite preview",
     "dev": "electron-vite dev --watch",
-    "build": "npm run typecheck && electron-vite build && npm run build-rs",
+    "build": "pnpm run typecheck && electron-vite build && pnpm run build-rs",
     "postinstall": "electron-builder install-app-deps",
-    "build:unpack": "npm run build && electron-builder --dir && npm run copy-resources-mac",
-    "build:win": "npm run build && electron-builder --win --config electron-builder.config.cjs && npm run copy-resources-win",
-    "build:mac": "electron-vite build && electron-builder --mac --config electron-builder.config.cjs && npm run copy-resources-mac",
-    "build:linux": "electron-vite build && electron-builder --linux --config electron-builder.config.cjs && npm run copy-resources-linux",
+    "build:unpack": "pnpm run build && electron-builder --dir --config electron-builder.config.cjs && pnpm run copy-resources-mac",
+    "build:win": "pnpm run build && electron-builder --win --config electron-builder.config.cjs && pnpm run copy-resources-win",
+    "build:mac": "electron-vite build && electron-builder --mac --config electron-builder.config.cjs && pnpm run copy-resources-mac",
+    "build:linux": "electron-vite build && electron-builder --linux --config electron-builder.config.cjs && pnpm run copy-resources-linux",
     "copy-resources-mac": "cp -r resources dist/mac*/speakmcp.app/Contents/Resources/ 2>/dev/null || true",
     "copy-resources-win": "xcopy /E /I /Y resources dist\\win-unpacked\\resources 2>nul || true",
     "copy-resources-linux": "cp -r resources dist/linux*/resources/ 2>/dev/null || true",
@@ -31,10 +31,13 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug",
     "test:e2e:headed": "playwright test --headed",
-    "test": "vitest run"
+    "test": "vitest run",
+    "verify-build": "node scripts/verify-build.js",
+    "test-mcp-import": "node scripts/test-mcp-import.js"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.13.3"
+    "@modelcontextprotocol/sdk": "^1.13.3",
+    "cross-spawn": "^7.0.6"
   },
   "devDependencies": {
     "@egoist/tailwindcss-icons": "^1.8.1",
