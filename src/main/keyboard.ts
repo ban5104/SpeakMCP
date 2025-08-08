@@ -123,6 +123,11 @@ export function listenToKeyboardEvents() {
   let startRecordingTimer: NodeJS.Timeout | undefined
   let isPressedCtrlKey = false
 
+  // Double-tap Control detection state
+  let lastCtrlPressTime = 0
+  let doubleTapTimer: NodeJS.Timeout | undefined
+  const DOUBLE_TAP_WINDOW = 300 // 300ms window for double-tap detection
+
   // MCP tool calling state
   let isHoldingCtrlAltKey = false
   let startMcpRecordingTimer: NodeJS.Timeout | undefined
@@ -143,6 +148,13 @@ export function listenToKeyboardEvents() {
     if (startMcpRecordingTimer) {
       clearTimeout(startMcpRecordingTimer)
       startMcpRecordingTimer = undefined
+    }
+  }
+
+  const clearDoubleTapTimer = () => {
+    if (doubleTapTimer) {
+      clearTimeout(doubleTapTimer)
+      doubleTapTimer = undefined
     }
   }
 
@@ -186,6 +198,39 @@ export function listenToKeyboardEvents() {
       if (config.shortcut === "ctrl-slash") {
         if (e.data.key === "Slash" && isPressedCtrlKey) {
           getWindowRendererHandlers("panel")?.startOrFinishRecording.send()
+        }
+      } else if (config.shortcut === "double-tap-ctrl") {
+        if (e.data.key === "ControlLeft") {
+          if (hasRecentKeyPress()) {
+            console.log("ignore ctrl because other keys are pressed", [
+              ...keysPressed.keys(),
+            ])
+            return
+          }
+
+          const currentTime = Date.now()
+          const timeSinceLastTap = currentTime - lastCtrlPressTime
+
+          if (timeSinceLastTap <= DOUBLE_TAP_WINDOW && lastCtrlPressTime > 0) {
+            // Double-tap detected!
+            console.log("Double-tap Control detected! Starting recording")
+            clearDoubleTapTimer()
+            lastCtrlPressTime = 0 // Reset to prevent triple-tap
+            getWindowRendererHandlers("panel")?.startOrFinishRecording.send()
+          } else {
+            // First tap or too long since last tap
+            lastCtrlPressTime = currentTime
+            clearDoubleTapTimer()
+            
+            // Set timer to reset if no second tap occurs
+            doubleTapTimer = setTimeout(() => {
+              lastCtrlPressTime = 0
+            }, DOUBLE_TAP_WINDOW)
+          }
+        } else {
+          keysPressed.set(e.data.key, e.time.secs_since_epoch)
+          clearDoubleTapTimer()
+          lastCtrlPressTime = 0 // Reset double-tap detection when other keys are pressed
         }
       } else {
         if (e.data.key === "ControlLeft") {
@@ -269,7 +314,7 @@ export function listenToKeyboardEvents() {
         console.log(`[MCP-DEBUG] Alt released, isPressedCtrlAltKey: ${isPressedCtrlAltKey}`)
       }
 
-      if (configStore.get().shortcut === "ctrl-slash") return
+      if (configStore.get().shortcut === "ctrl-slash" || configStore.get().shortcut === "double-tap-ctrl") return
 
       cancelRecordingTimer()
       cancelMcpRecordingTimer()

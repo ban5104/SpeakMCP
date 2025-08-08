@@ -11,6 +11,7 @@ export const configPath = path.join(dataFolder, "config.json")
 
 const getConfig = () => {
   const defaultConfig: Partial<Config> = {
+    shortcut: "double-tap-ctrl",
     mcpToolsShortcut: "hold-ctrl-alt",
   }
 
