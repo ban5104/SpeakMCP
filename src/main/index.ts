@@ -14,6 +14,7 @@ import { registerServeProtocol, registerServeSchema } from "./serve"
 import { createAppMenu } from "./menu"
 import { initTray } from "./tray"
 import { isAccessibilityGranted } from "./utils"
+import { shutdownManager } from "./shutdown-manager"
 
 registerServeSchema()
 
@@ -65,9 +66,94 @@ app.whenReady().then(() => {
     }
   })
 
-  app.on("before-quit", () => {
-    makePanelWindowClosable()
+  app.on("before-quit", async (event) => {
+    console.log("[SHUTDOWN-DEBUG] App before-quit event triggered")
+    
+    if (!shutdownManager.isShutdownInProgress()) {
+      // Prevent default quit to run cleanup first
+      event.preventDefault()
+      
+      try {
+        console.log("[SHUTDOWN-DEBUG] Starting graceful shutdown...")
+        await shutdownManager.gracefulShutdown()
+        makePanelWindowClosable()
+        console.log("[SHUTDOWN-DEBUG] Graceful shutdown completed, quitting app")
+        app.quit()
+      } catch (error) {
+        console.error("[SHUTDOWN-DEBUG] Graceful shutdown failed:", error)
+        console.log("[SHUTDOWN-DEBUG] Attempting force shutdown...")
+        await shutdownManager.forceShutdown()
+        makePanelWindowClosable()
+        app.quit()
+      }
+    } else {
+      // Shutdown already in progress, allow quit
+      makePanelWindowClosable()
+    }
   })
+
+  app.on("will-quit", async (event) => {
+    console.log("[SHUTDOWN-DEBUG] App will-quit event triggered")
+    
+    if (!shutdownManager.isShutdownInProgress()) {
+      // Prevent default quit to run cleanup first
+      event.preventDefault()
+      
+      try {
+        console.log("[SHUTDOWN-DEBUG] Force shutdown from will-quit")
+        await shutdownManager.forceShutdown()
+        console.log("[SHUTDOWN-DEBUG] Force shutdown completed")
+        app.quit()
+      } catch (error) {
+        console.error("[SHUTDOWN-DEBUG] Force shutdown failed:", error)
+        // Continue with quit anyway
+      }
+    }
+  })
+})
+
+// System signal handlers for graceful shutdown
+process.on("SIGTERM", async () => {
+  console.log("[SHUTDOWN-DEBUG] SIGTERM received")
+  try {
+    await shutdownManager.gracefulShutdown(5000) // Shorter timeout for system signals
+    app.quit()
+  } catch (error) {
+    console.error("[SHUTDOWN-DEBUG] SIGTERM graceful shutdown failed:", error)
+    process.exit(1)
+  }
+})
+
+process.on("SIGINT", async () => {
+  console.log("[SHUTDOWN-DEBUG] SIGINT received")
+  try {
+    await shutdownManager.gracefulShutdown(5000) // Shorter timeout for system signals
+    app.quit()
+  } catch (error) {
+    console.error("[SHUTDOWN-DEBUG] SIGINT graceful shutdown failed:", error)
+    process.exit(1)
+  }
+})
+
+// Handle uncaught exceptions and cleanup
+process.on("uncaughtException", async (error) => {
+  console.error("[SHUTDOWN-DEBUG] Uncaught exception:", error)
+  try {
+    await shutdownManager.forceShutdown()
+  } catch (cleanupError) {
+    console.error("[SHUTDOWN-DEBUG] Cleanup after uncaught exception failed:", cleanupError)
+  }
+  process.exit(1)
+})
+
+process.on("unhandledRejection", async (reason, promise) => {
+  console.error("[SHUTDOWN-DEBUG] Unhandled rejection at:", promise, "reason:", reason)
+  try {
+    await shutdownManager.forceShutdown()
+  } catch (cleanupError) {
+    console.error("[SHUTDOWN-DEBUG] Cleanup after unhandled rejection failed:", cleanupError)
+  }
+  process.exit(1)
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common

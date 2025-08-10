@@ -12,8 +12,10 @@ import {
 import { configStore } from "./config"
 import { state } from "./state"
 import { isAccessibilityGranted } from "./utils"
+import { shutdownManager } from "./shutdown-manager"
 
 let binaryName: string;
+let currentKeyboardProcess: ChildProcess | null = null;
 
 switch (process.platform) {
   case 'darwin': // This is macOS
@@ -136,6 +138,12 @@ const hasRecentKeyPress = () => {
 }
 
 export function listenToKeyboardEvents() {
+  // If already running, don't start another process
+  if (currentKeyboardProcess && !currentKeyboardProcess.killed) {
+    console.log(`[KEYBOARD-DEBUG] Keyboard monitoring already running (PID: ${currentKeyboardProcess.pid})`)
+    return
+  }
+
   let isHoldingCtrlKey = false
   let startRecordingTimer: NodeJS.Timeout | undefined
   let isPressedCtrlKey = false
@@ -377,17 +385,24 @@ export function listenToKeyboardEvents() {
   }
 
   console.log(`[KEYBOARD-DEBUG] Starting keyboard monitoring process: ${rdevPath} listen`)
-  const child = spawn(rdevPath, ["listen"], {})
+  currentKeyboardProcess = spawn(rdevPath, ["listen"], {})
 
-  child.on("error", (error) => {
+  // Track the process for cleanup during shutdown
+  shutdownManager.trackProcess("keyboard-monitor", currentKeyboardProcess)
+
+  currentKeyboardProcess.on("error", (error) => {
     console.error(`[KEYBOARD-DEBUG] ❌ Failed to spawn keyboard monitoring process:`, error)
+    shutdownManager.untrackProcess("keyboard-monitor")
+    currentKeyboardProcess = null
   })
 
-  child.on("close", (code) => {
+  currentKeyboardProcess.on("close", (code) => {
     console.log(`[KEYBOARD-DEBUG] ⚠️ Keyboard monitoring process closed with code: ${code}`)
+    shutdownManager.untrackProcess("keyboard-monitor")
+    currentKeyboardProcess = null
   })
 
-  child.stdout.on("data", (data) => {
+  currentKeyboardProcess.stdout?.on("data", (data) => {
     if (import.meta.env.DEV) {
       console.log(String(data))
     }
