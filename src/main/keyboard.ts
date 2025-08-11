@@ -11,9 +11,11 @@ import {
 } from "./window"
 import { configStore } from "./config"
 import { state } from "./state"
-import { isAccessibilityGranted } from "./utils"
+import { isAccessibilityGrantedAsync, isAccessibilityGrantedSync, refreshPermissionCache } from "./utils"
+import { shutdownManager } from "./shutdown-manager"
 
 let binaryName: string;
+let currentKeyboardProcess: ChildProcess | null = null;
 
 switch (process.platform) {
   case 'darwin': // This is macOS
@@ -135,7 +137,13 @@ const hasRecentKeyPress = () => {
   })
 }
 
-export function listenToKeyboardEvents() {
+export async function listenToKeyboardEvents() {
+  // If already running, don't start another process
+  if (currentKeyboardProcess && !currentKeyboardProcess.killed) {
+    console.log(`[KEYBOARD-DEBUG] Keyboard monitoring already running (PID: ${currentKeyboardProcess.pid})`)
+    return
+  }
+
   let isHoldingCtrlKey = false
   let startRecordingTimer: NodeJS.Timeout | undefined
   let isPressedCtrlKey = false
@@ -151,11 +159,21 @@ export function listenToKeyboardEvents() {
   let isPressedCtrlAltKey = false
 
   console.log(`[KEYBOARD-DEBUG] Starting keyboard listener...`)
-  console.log(`[KEYBOARD-DEBUG] Accessibility granted: ${isAccessibilityGranted()}`)
   console.log(`[KEYBOARD-DEBUG] Binary path: ${rdevPath}`)
   console.log(`[KEYBOARD-DEBUG] Binary available: ${isBinaryAvailable()}`)
 
-  if (!isAccessibilityGranted()) {
+  // Check accessibility permissions with enhanced detection for development
+  let hasPermissions: boolean
+  try {
+    hasPermissions = await isAccessibilityGrantedAsync()
+  } catch (error) {
+    console.error('[KEYBOARD-DEBUG] Error checking permissions async, using sync fallback:', error)
+    hasPermissions = isAccessibilityGrantedSync()
+  }
+  
+  console.log(`[KEYBOARD-DEBUG] Accessibility granted: ${hasPermissions}`)
+
+  if (!hasPermissions) {
     console.log(`[KEYBOARD-DEBUG] ❌ Accessibility not granted, keyboard monitoring disabled`)
     return
   }
@@ -377,17 +395,24 @@ export function listenToKeyboardEvents() {
   }
 
   console.log(`[KEYBOARD-DEBUG] Starting keyboard monitoring process: ${rdevPath} listen`)
-  const child = spawn(rdevPath, ["listen"], {})
+  currentKeyboardProcess = spawn(rdevPath, ["listen"], {})
 
-  child.on("error", (error) => {
+  // Track the process for cleanup during shutdown
+  shutdownManager.trackProcess("keyboard-monitor", currentKeyboardProcess)
+
+  currentKeyboardProcess.on("error", (error) => {
     console.error(`[KEYBOARD-DEBUG] ❌ Failed to spawn keyboard monitoring process:`, error)
+    shutdownManager.untrackProcess("keyboard-monitor")
+    currentKeyboardProcess = null
   })
 
-  child.on("close", (code) => {
+  currentKeyboardProcess.on("close", (code) => {
     console.log(`[KEYBOARD-DEBUG] ⚠️ Keyboard monitoring process closed with code: ${code}`)
+    shutdownManager.untrackProcess("keyboard-monitor")
+    currentKeyboardProcess = null
   })
 
-  child.stdout.on("data", (data) => {
+  currentKeyboardProcess.stdout?.on("data", (data) => {
     if (import.meta.env.DEV) {
       console.log(String(data))
     }

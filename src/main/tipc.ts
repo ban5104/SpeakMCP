@@ -17,7 +17,7 @@ import { postProcessTranscript, processTranscriptWithTools } from "./llm"
 import { mcpService, MCPToolResult } from "./mcp-service"
 import { state } from "./state"
 import { updateTrayIcon } from "./tray"
-import { isAccessibilityGranted } from "./utils"
+import { isAccessibilityGrantedAsync, isAccessibilityGrantedSync, refreshPermissionCache } from "./utils"
 import { writeText } from "./keyboard"
 
 
@@ -142,7 +142,21 @@ export const router = {
   }),
 
   isAccessibilityGranted: t.procedure.action(async () => {
-    return isAccessibilityGranted()
+    console.log('[IPC-DEBUG] Checking accessibility permissions via IPC...')
+    
+    // Refresh cache to ensure fresh check (important for development)
+    refreshPermissionCache()
+    
+    try {
+      const result = await isAccessibilityGrantedAsync()
+      console.log(`[IPC-DEBUG] Async permission check result: ${result}`)
+      return result
+    } catch (error) {
+      console.error('[IPC-DEBUG] Error in async permission check, using sync fallback:', error)
+      const fallbackResult = isAccessibilityGrantedSync()
+      console.log(`[IPC-DEBUG] Sync fallback result: ${fallbackResult}`)
+      return fallbackResult
+    }
   }),
 
   switchToMainWindow: t.procedure.action(async () => {
@@ -270,7 +284,9 @@ export const router = {
 
       // paste
       clipboard.writeText(transcript)
-      if (isAccessibilityGranted()) {
+      
+      // Use sync version for immediate check in recording flow
+      if (isAccessibilityGrantedSync()) {
         try {
           await writeText(transcript)
         } catch (error) {
@@ -424,7 +440,9 @@ export const router = {
 
       // Copy final response to clipboard and paste
       clipboard.writeText(finalResponse)
-      if (isAccessibilityGranted()) {
+      
+      // Use sync version for immediate check in MCP recording flow
+      if (isAccessibilityGrantedSync()) {
         try {
           await writeText(finalResponse)
         } catch (error) {

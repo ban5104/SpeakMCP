@@ -7,6 +7,7 @@ import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
 import { Client } from "@modelcontextprotocol/sdk/client/index.js"
 import { MCPConfig, MCPServerConfig } from "../shared/types"
 import { configStore } from "./config"
+import { shutdownManager } from "./shutdown-manager"
 
 const accessAsync = promisify(access)
 
@@ -42,6 +43,17 @@ export class MCPService {
   private disabledTools: Set<string> = new Set()
   private isInitializing = false
   private initializationProgress: { current: number; total: number; currentServer?: string } = { current: 0, total: 0 }
+
+  constructor() {
+    // Register cleanup task with shutdown manager
+    shutdownManager.registerCleanupTask({
+      name: "mcp-service",
+      cleanup: async () => {
+        await this.cleanup()
+      },
+      priority: 10 // Run after higher priority tasks
+    })
+  }
 
   async initialize(): Promise<void> {
     console.log("[MCP-DEBUG] 🚀 Initializing MCP service...")
